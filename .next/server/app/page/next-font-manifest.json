@@ -1,0 +1,12 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/app/page": [
+      "static/media/DMSans_Regular-s.p.14_su.~fejy_7.ttf",
+      "static/media/DMSans_Bold-s.p.0ocb30n8w3ohh.ttf",
+      "static/media/Lost_in_South-s.p.0y7i~3n430l4v.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}
