@@ -49,7 +49,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
   // Asset Loading
   const outroFrames = Array.from(
     { length: OUTRO_FRAME_COUNT },
-    (_, i) => `/frames/outro/frame_${String(i + 1).padStart(4, '0')}.png`
+    (_, i) => `${process.env.NEXT_PUBLIC_S3_BASE_URL}/frames/outro/frame_${String(i + 1).padStart(4, '0')}.png`
   );
   
   // Only attempt to load image sequence if not on mobile

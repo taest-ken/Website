@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'taest-production-media.s3.eu-north-1.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

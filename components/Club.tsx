@@ -28,9 +28,9 @@ const clubItems: ClubData[] = [
     tagline: "Upgrade your cultural software.",
     size: "md:col-span-2 md:row-span-2",
     folders: [
-      { path: "club_media/os-reports/part 1", sort: "ordered" },
-      { path: "club_media/os-reports/part 2", sort: "ordered" },
-      { path: "club_media/os-reports/part 3", sort: "ordered" }
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/os-reports/part 1", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/os-reports/part 2", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/os-reports/part 3", sort: "ordered" }
     ],
   },
   {
@@ -39,8 +39,8 @@ const clubItems: ClubData[] = [
     tagline: "Social highlights",
     size: "md:col-span-1 md:row-span-2",
     folders: [
-      { path: "club_media/feed/1", sort: "ordered" },
-      { path: "club_media/feed/2", sort: "random" } // Example of mixing!
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/feed/1", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/feed/2", sort: "random" } // Example of mixing!
     ],
   },
   {
@@ -48,7 +48,7 @@ const clubItems: ClubData[] = [
     title: "taest mixers",
     tagline: "Meet, network, ideate with new tastemakers.",
     size: "md:col-span-1 md:row-span-1",
-    folders: [{ path: "club_media/mixers", sort: "ordered" }],
+    folders: [{ path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/mixers", sort: "ordered" }],
   },
   {
     id: "bloopers",
@@ -56,8 +56,8 @@ const clubItems: ClubData[] = [
     tagline: "Unfiltered access.",
     size: "md:col-span-1 md:row-span-1",
     folders: [
-      { path: "club_media/bloopers/vid", sort: "ordered" },
-      { path: "club_media/bloopers/ai slop", sort: "random" }
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/bloopers/vid", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/bloopers/ai slop", sort: "random" }
     ],
   },
   {
@@ -66,8 +66,8 @@ const clubItems: ClubData[] = [
     tagline: "Develop, expand, evolve your taste.",
     size: "md:col-span-2 md:row-span-1",
     folders: [
-      { path: "club_media/in-taest-we-trust/1", sort: "random" },
-      { path: "club_media/in-taest-we-trust/2", sort: "random" }
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/in-taest-we-trust/1", sort: "random" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/in-taest-we-trust/2", sort: "random" }
     ],
   },
   {
@@ -75,7 +75,7 @@ const clubItems: ClubData[] = [
     title: "What we do",
     tagline: "Capabilities & Offerings.",
     size: "md:col-span-2 md:row-span-1",
-    folders: [{ path: "club_media/what-we-do", sort: "random" }],
+    folders: [{ path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/club_media/what-we-do", sort: "random" }],
   },
 ];
 

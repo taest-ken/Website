@@ -28,10 +28,10 @@ const collabsData: CollabData[] = [
     featuredMedia: "film/2.mp4",
     description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans, but to shift the GT fandom's loyalty and respect towards BE. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
-      { path: "collabs_media/birla-gt/film", sort: "ordered" },
-      { path: "collabs_media/birla-gt/stat", sort: "ordered" },
-      { path: "collabs_media/birla-gt/strat", sort: "ordered" },
-      { path: "collabs_media/birla-gt/camp", sort: "ordered" }
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//birla-gt/film", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//birla-gt/stat", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//birla-gt/strat", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//birla-gt/camp", sort: "ordered" }
     ],
   },
   {
@@ -40,11 +40,11 @@ const collabsData: CollabData[] = [
     featuredMedia: "2/creatives/1.png",
     description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's heartland.",
     folders: [
-      { path: "collabs_media/google-ai/1", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/creatives", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/strategy", sort: "ordered" },
-      { path: "collabs_media/google-ai/3/creatives", sort: "ordered" },
-      { path: "collabs_media/google-ai/3/strategy", sort: "ordered" }
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//google-ai/1", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//google-ai/2/creatives", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//google-ai/2/strategy", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//google-ai/3/creatives", sort: "ordered" },
+      { path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//google-ai/3/strategy", sort: "ordered" }
     ],
   },
   {
@@ -52,21 +52,21 @@ const collabsData: CollabData[] = [
     subhead: "Brand world building + Identity",
     featuredMedia: "1.mp4",
     description: "A demonstration of the agency's brand-world designing capabilities, displayed through a detailed immersion into our own branding & identity process.",
-    folders: [{ path: "collabs_media/brand-book", sort: "ordered" }],
+    folders: [{ path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//brand-book", sort: "ordered" }],
   },
   {
     headline: "Taest Motion Ident Inhouse",
     subhead: "Motion animation",
     featuredMedia: "2.mp4",
     description: "A demonstration of the agency's motion graphics and animation capabilities displayed via taest's motion ident, designed in-house.",
-    folders: [{ path: "collabs_media/motion-ident", sort: "ordered" }],
+    folders: [{ path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//motion-ident", sort: "ordered" }],
   },
   {
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
     featuredMedia: "1.png",
     description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland, as well as through work developed proactively for taest's insta handle.",
-    folders: [{ path: "collabs_media/woodland", sort: "ordered" }],
+    folders: [{ path: "{process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media//woodland", sort: "ordered" }],
   },
 ];
 

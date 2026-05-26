@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1053.0",
     "@hookform/resolvers": "^3.9.1",
     "@next/font": "^14.2.15",
     "@radix-ui/react-accordion": "1.2.12",
