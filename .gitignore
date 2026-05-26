@@ -1,3 +1,5 @@
-public
+public/collabs_media
+public/clients_media
+public/frames
 node_modules
 .next/
