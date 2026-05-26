@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'taest-production-media.s3.eu-north-1.amazonaws.com',
+        hostname: 'taest-production-media.s3.eu-north-1.amazonaws.com', // Replace with your exact S3 bucket hostname
         port: '',
         pathname: '/**',
       },

@@ -98,7 +98,7 @@ export async function GET(request: Request) {
       combinedMedia.push(...folderMedia);
     }
 
-    return NextResponse.json(combinedMedia);
+    return NextResponse.json({ media: combinedMedia });
 
   } catch (error) {
     console.error("S3 Fetch Error:", error);

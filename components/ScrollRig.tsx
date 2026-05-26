@@ -198,7 +198,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
           {/* Phase 1: Looping Background */}
           <motion.video
             ref={videoRef}
-            src="/videos/hero-loop-optimized.mp4"
+            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hero-loop-optimized.mp4`}
             muted
             playsInline
             loop
@@ -217,7 +217,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
           {isMobile ? (
             <motion.video
               ref={outroVideoRef}
-              src="/videos/transition-outro-scrub.mp4"
+              src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/transition-outro-scrub.mp4`}
               muted
               playsInline
               preload="auto"
