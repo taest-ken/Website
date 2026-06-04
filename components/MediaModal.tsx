@@ -54,9 +54,8 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
 
   const togglePlay = () => {
     if (videoRef.current) {
-      if (isPlaying) videoRef.current.pause();
-      else videoRef.current.play();
-      setIsPlaying(!isPlaying);
+      if (videoRef.current.paused) videoRef.current.play();
+      else videoRef.current.pause();
     }
   };
 
@@ -80,7 +79,18 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
         <AnimatePresence mode="wait">
           <motion.div key={activeIdx} initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="relative w-full h-full flex items-center justify-center">
             {currentMedia.type === "video" ? (
-              <video ref={videoRef} src={currentMedia.src} autoPlay muted={isMuted} onTimeUpdate={handleTimeUpdate} onEnded={handleNext} className="max-w-full max-h-full" />
+              <video 
+                ref={videoRef} 
+                src={currentMedia.src} 
+                autoPlay 
+                muted={isMuted} 
+                onTimeUpdate={handleTimeUpdate} 
+                onEnded={handleNext} 
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onClick={togglePlay}
+                className="max-w-full max-h-full cursor-pointer" 
+              />
             ) : (
               <Image src={currentMedia.src} alt="Media" fill className="object-contain" />
             )}

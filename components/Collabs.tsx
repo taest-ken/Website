@@ -30,7 +30,6 @@ const collabsData: CollabData[] = [
     folders: [
       { path: "collabs_media/birla-gt/film", sort: "ordered" },
       { path: "collabs_media/birla-gt/stat", sort: "ordered" },
-      { path: "collabs_media/birla-gt/strat", sort: "ordered" },
       { path: "collabs_media/birla-gt/camp", sort: "ordered" }
     ],
   },

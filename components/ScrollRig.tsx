@@ -38,9 +38,11 @@ export default function ScrollRig({ children }: ScrollRigProps) {
   const containerPointerEvents = useTransform(scrollYProgress, [0.999, 1], ['auto', 'none']);
   const containerVisibility = useTransform(scrollYProgress, [0.999, 1], ['visible', 'hidden']);
 
-  // Video & Canvas Opacities
   const videoOpacity = useTransform(scrollYProgress, [0, P_SWAP_START, P_SWAP_END], [1, 1, 0]);
   const outroOpacity = useTransform(scrollYProgress, [P_SWAP_START, P_SWAP_END, P_LOCK_END, 1], [0, 1, 1, 1]);
+  
+  // Phase 2: Eradicate Hero Ghost
+  const videoDisplay = useTransform(scrollYProgress, (v) => v > P_SWAP_END ? "none" : "block");
 
   // Handshake Transforms
   const stickyTranslateY = useTransform(scrollYProgress, [P_LOCK_END, 1], ['0vh', '-100vh']);
@@ -209,6 +211,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
               height: '100%',
               objectFit: 'cover',
               opacity: videoOpacity,
+              display: videoDisplay,
               zIndex: 1,
             }}
           />
