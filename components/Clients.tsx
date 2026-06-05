@@ -5,13 +5,13 @@ import { useRef } from "react";
 
 // Update these paths to match exactly what you name your files in the public/clients_media folder
 const clients = [
-  { name: "Birla Estates", src: "/clients_media/birla-estates.svg" },
-  { name: "Gujarat Titans", src: "/clients_media/gujarat-titans.png" },
-  { name: "Google", src: "/clients_media/google.svg" },
-  { name: "Procter & Gamble", src: "/clients_media/pg.png" },
-  { name: "Trailer Park Group", src: "/clients_media/trailer-park-group.png" },
-  { name: "Sparkt LLP", src: "/clients_media/sparkt.png" },
-  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png" }
+  { name: "Birla Estates", src: "/clients_media/birla-estates.svg", scale: "scale-100" },
+  { name: "Gujarat Titans", src: "/clients_media/gujarat-titans.png", scale: "scale-90" },
+  { name: "Google", src: "/clients_media/google.svg", scale: "scale-110" },
+  { name: "Procter & Gamble", src: "/clients_media/pg.png", scale: "scale-125" },
+  { name: "Trailer Park Group", src: "/clients_media/trailer-park-group.png", scale: "scale-95" },
+  { name: "Sparkt LLP", src: "/clients_media/sparkt.png", scale: "scale-100" },
+  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png", scale: "scale-105" }
 ];
 
 export default function Clients() {
@@ -86,16 +86,16 @@ export default function Clients() {
       {/* Interactive Container that tracks the mouse */}
       <div className="relative flex overflow-x-hidden py-8">
         {/* The marquee wrapper */}
-        {/* Added strict gap spacing here instead of relying on margins */}
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-16 md:gap-24 lg:gap-32" ref={marqueeRef}>
-          {/* We duplicate the list to create the infinite illusion */}
-          {[...clients, ...clients, ...clients].map((client, index) => (
+        {/* Added wider gap spacing to give logos more breathing room */}
+        <div className="animate-marquee whitespace-nowrap flex items-center gap-24 md:gap-32 lg:gap-48" ref={marqueeRef}>
+          {/* Duplicated 6 times to ensure it never breaks on ultra-wide screens */}
+          {[...clients, ...clients, ...clients, ...clients, ...clients, ...clients].map((client, index) => (
             <div 
               key={`${client.name}-${index}`}
               onMouseEnter={handleLogoEnter}
               onMouseLeave={handleLogoLeave}
-              // Removed fixed widths, adjusted height, and let width be auto-calculated
-              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center"
+              // Apply the custom scale class here dynamically!
+              className={`relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center ${client.scale || "scale-100"}`}
             >
               {/* Native img tag handles dynamic w-auto perfectly compared to Next.js strict fill bounding boxes */}
               <img 
@@ -112,7 +112,7 @@ export default function Clients() {
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
-          100% { transform: translateX(-33.33%); } /* Adjusted for 3x duplication */
+          100% { transform: translateX(-16.6666%); } /* Adjusted perfectly for 6x duplication */
         }
         .animate-marquee {
           /* 40s is slow enough to read, fast enough to feel alive */
