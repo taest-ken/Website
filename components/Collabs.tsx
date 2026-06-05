@@ -54,6 +54,13 @@ const collabsData: CollabData[] = [
     folders: [{ path: "collabs_media/brand-book", sort: "ordered" }],
   },
   {
+    headline: "Taest HumAIne Kitchen Inhouse",
+    subhead: "AI Creative Direction",
+    featuredMedia: "1.png",
+    description: "A demonstration of the agency’s AI creative direction capabilities displayed via our stunning social posts developed for our socials.",
+    folders: [{ path: "collabs_media/creative-direction", sort: "ordered" }],
+  },
+  {
     headline: "Taest Motion Ident Inhouse",
     subhead: "Motion animation",
     featuredMedia: "2.mp4",
