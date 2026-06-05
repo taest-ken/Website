@@ -16,14 +16,22 @@ const clients = [
 
 export default function Clients() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null); // New ref specifically for the scrolling animation
   const isHoveringLogo = useRef(false);
+
+  // Helper to cleanly update all active animation tracks
+  const updatePlaybackRate = (rate: number) => {
+    if (!containerRef.current) return;
+    const tracks = containerRef.current.querySelectorAll('.animate-marquee');
+    tracks.forEach((track) => {
+      track.getAnimations().forEach((anim) => {
+        anim.playbackRate = rate;
+      });
+    });
+  };
 
   // Dynamically alters the speed of the running CSS animation
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || !marqueeRef.current) return;
-    
-    // UX OVERRIDE: If directly hovering a logo, keep it paused (0). Do not fast-forward.
+    if (!containerRef.current) return;
     if (isHoveringLogo.current) return;
 
     const { left, width } = containerRef.current.getBoundingClientRect();
@@ -31,38 +39,24 @@ export default function Clients() {
     const hoverRatio = cursorX / width;
 
     let playbackRate = 1; // Default speed
-    
-    // If hovering the left 20% or right 20% of the container, speed up 4x
     if (hoverRatio < 0.2 || hoverRatio > 0.8) {
       playbackRate = 4; 
     }
 
-    // Apply the time manipulation ONLY to the marquee wrapper
-    marqueeRef.current.getAnimations().forEach((anim) => {
-      anim.playbackRate = playbackRate;
-    });
+    updatePlaybackRate(playbackRate);
   };
 
   const handleMouseLeave = () => {
-    if (!marqueeRef.current) return;
-    // Reset to normal speed when the mouse leaves the section entirely
-    marqueeRef.current.getAnimations().forEach((anim) => {
-      anim.playbackRate = 1;
-    });
+    updatePlaybackRate(1);
   };
 
   const handleLogoEnter = () => {
     isHoveringLogo.current = true;
-    if (marqueeRef.current) {
-      marqueeRef.current.getAnimations().forEach((anim) => {
-        anim.playbackRate = 0; // Hard Pause
-      });
-    }
+    updatePlaybackRate(0); // Hard Pause
   };
 
   const handleLogoLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     isHoveringLogo.current = false;
-    // Re-evaluate mouse position immediately so it resumes at the correct edge/center speed
     handleMouseMove(e as unknown as React.MouseEvent<HTMLDivElement>);
   };
 
@@ -83,36 +77,53 @@ export default function Clients() {
         </h2>
       </div>
 
-      {/* Interactive Container that tracks the mouse */}
-      <div className="relative flex overflow-x-hidden py-8">
-        {/* The marquee wrapper */}
-        {/* ADDED: w-max ensures the div's width matches all 42 logos, not the screen width! */}
-        <div className="animate-marquee w-max flex items-center" ref={marqueeRef}>
-          {/* Duplicated 6 times to ensure it never breaks on ultra-wide screens */}
-          {[...clients, ...clients, ...clients, ...clients, ...clients, ...clients].map((client, index) => (
+      {/* Interactive Container: overflow-hidden kills the scrollbar, py-12 gives room for scale-160 */}
+      <div className="relative flex overflow-hidden py-12">
+        
+        {/* Track 1 */}
+        <div className="animate-marquee w-max flex items-center shrink-0">
+          {/* 4 loops guarantees it is wider than any 4K screen */}
+          {[...clients, ...clients, ...clients, ...clients].map((client, index) => (
             <div 
-              key={`${client.name}-${index}`}
+              key={`t1-${client.name}-${index}`}
               onMouseEnter={handleLogoEnter}
               onMouseLeave={handleLogoLeave}
-              // The wrapper maintains strict, unscaled padding gaps
               className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
             >
               <img 
                 src={client.src} 
                 alt={`${client.name} logo`} 
-                // Scale and hover effects are applied directly to the image so the gap math remains untouched!
                 className={`h-full w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer ${client.scale || "scale-100"}`}
               />
             </div>
           ))}
         </div>
+
+        {/* Track 2 (Exact visual duplicate seamlessly following Track 1) */}
+        <div className="animate-marquee w-max flex items-center shrink-0" aria-hidden="true">
+          {[...clients, ...clients, ...clients, ...clients].map((client, index) => (
+            <div 
+              key={`t2-${client.name}-${index}`}
+              onMouseEnter={handleLogoEnter}
+              onMouseLeave={handleLogoLeave}
+              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
+            >
+              <img 
+                src={client.src} 
+                alt={`${client.name} logo`} 
+                className={`h-full w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer ${client.scale || "scale-100"}`}
+              />
+            </div>
+          ))}
+        </div>
+
       </div>
 
       {/* 60fps GPU-accelerated CSS Animation */}
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
-          100% { transform: translateX(calc(-100% / 6)); } /* Lets the browser calculate absolute sub-pixel perfection */
+          100% { transform: translateX(-100%); } /* A perfect seamless slide */
         }
         .animate-marquee {
           /* 40s is slow enough to read, fast enough to feel alive */
