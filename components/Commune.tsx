@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 interface BioModuleProps {
   name: string;
@@ -15,17 +16,20 @@ interface BioModuleProps {
 }
 
 function BioModule({ name, role, initials, image, bio, socials }: BioModuleProps) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <article className="group p-6 border border-dark-grey rounded-lg bg-secondary/20 hover:border-neon-green/50 transition-colors duration-300 flex flex-col h-full">
       <div className="flex items-start gap-4">
         {/* Avatar Rendering */}
         <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-neon-green/20 to-secondary flex items-center justify-center shrink-0 border border-dark-grey group-hover:border-neon-green/50 transition-colors overflow-hidden">
-          {image ? (
+          {image && !imgError ? (
             <Image 
               src={image} 
               alt={`${name} profile picture`} 
               fill 
-              className="object-cover" 
+              className="object-cover"
+              onError={() => setImgError(true)} // Instantly flips back to initials if the image file isn't found
             />
           ) : (
             <span className="text-lg font-bold text-white relative z-10">{initials}</span>
