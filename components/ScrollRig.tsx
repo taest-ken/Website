@@ -20,7 +20,7 @@ const P_SWAP_END = 0.30;   // Clean swap complete
 const P_SCRUB_END = 0.90;  // Canvas scrub finishes
 const P_LOCK_END = 0.90;   // Handshake triggers exactly as scrub ends
 
-const OUTRO_FRAME_COUNT = 114; // set to your actual extracted frame count
+const OUTRO_FRAME_COUNT = 5; // set to your actual extracted frame count
 
 export default function ScrollRig({ children }: ScrollRigProps) {
   const isMobile = useIsMobile();
@@ -33,7 +33,11 @@ export default function ScrollRig({ children }: ScrollRigProps) {
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const lastFrameRef = useRef<number>(-1);
 
-  const { scrollYProgress } = useScroll({ target: containerRef });
+  // Added precise offsets so 0-1 exactly matches the scrollable area, eliminating the black gap delay
+  const { scrollYProgress } = useScroll({ 
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
   // DOM Cleanup
   const containerPointerEvents = useTransform(scrollYProgress, [0.999, 1], ['auto', 'none']);
@@ -265,7 +269,8 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       {/* Phase 5: The Handshake */}
       <motion.main
         id="static-content"
-        className="bg-black min-h-screen"
+        // Added relative z-20 to ensure perfect, gapless layer stacking
+        className="bg-black min-h-screen relative z-20"
         style={{ marginTop: '-100vh', y: staticContentY }}
       >
         {children}
