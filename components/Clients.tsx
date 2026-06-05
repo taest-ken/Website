@@ -86,22 +86,22 @@ export default function Clients() {
       {/* Interactive Container that tracks the mouse */}
       <div className="relative flex overflow-x-hidden py-8">
         {/* The marquee wrapper */}
-        {/* Removed the 'gap-*' property to fix the CSS math glitch */}
-        <div className="animate-marquee whitespace-nowrap flex items-center" ref={marqueeRef}>
+        {/* ADDED: w-max ensures the div's width matches all 42 logos, not the screen width! */}
+        <div className="animate-marquee w-max flex items-center" ref={marqueeRef}>
           {/* Duplicated 6 times to ensure it never breaks on ultra-wide screens */}
           {[...clients, ...clients, ...clients, ...clients, ...clients, ...clients].map((client, index) => (
             <div 
               key={`${client.name}-${index}`}
               onMouseEnter={handleLogoEnter}
               onMouseLeave={handleLogoLeave}
-              // Added pr-24 md:pr-32 lg:pr-48 here to perfectly bind the spacing to each item!
-              className={`relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center pr-24 md:pr-32 lg:pr-48 ${client.scale || "scale-100"}`}
+              // The wrapper maintains strict, unscaled padding gaps
+              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
             >
-              {/* Native img tag handles dynamic w-auto perfectly compared to Next.js strict fill bounding boxes */}
               <img 
                 src={client.src} 
                 alt={`${client.name} logo`} 
-                className="h-full w-auto object-contain"
+                // Scale and hover effects are applied directly to the image so the gap math remains untouched!
+                className={`h-full w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer ${client.scale || "scale-100"}`}
               />
             </div>
           ))}
@@ -112,7 +112,7 @@ export default function Clients() {
       <style jsx>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
-          100% { transform: translateX(-16.6666%); } /* Adjusted perfectly for 6x duplication */
+          100% { transform: translateX(calc(-100% / 6)); } /* Lets the browser calculate absolute sub-pixel perfection */
         }
         .animate-marquee {
           /* 40s is slow enough to read, fast enough to feel alive */
