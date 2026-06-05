@@ -21,7 +21,7 @@ export default function Footer() {
             <div className="flex flex-col gap-6">
               {/* Changed leading-relaxed to leading-snug to tighten line spacing */}
               <p className="text-xl md:text-2xl font-medium max-w-lg leading-snug opacity-85">
-                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn tomorrow&apos;s currency today.
+                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
             </div>
           </div>

@@ -66,7 +66,8 @@ export default function Header() {
           {/* Mobile menu button */}
           <button 
             onClick={toggleMenu}
-            className="md:hidden text-white p-2 ml-auto z-[60] relative"
+            // Added hover:text-neon-green and transition-colors
+            className="md:hidden text-white hover:text-neon-green transition-colors p-2 ml-auto z-[60] relative"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? (
