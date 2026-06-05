@@ -19,8 +19,9 @@ export default function Footer() {
               />
             </div>
             <div className="flex flex-col gap-6">
-              <p className="text-xl md:text-2xl font-medium max-w-lg leading-relaxed opacity-85">
-                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you <b>earn tomorrow&apos;s currency today.</b>
+              {/* Changed leading-relaxed to leading-snug to tighten line spacing */}
+              <p className="text-xl md:text-2xl font-medium max-w-lg leading-snug opacity-85">
+                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn tomorrow&apos;s currency today.
               </p>
             </div>
           </div>

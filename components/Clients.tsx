@@ -86,20 +86,22 @@ export default function Clients() {
       {/* Interactive Container that tracks the mouse */}
       <div className="relative flex overflow-x-hidden py-8">
         {/* The marquee wrapper */}
-        <div className="animate-marquee whitespace-nowrap flex items-center" ref={marqueeRef}>
+        {/* Added strict gap spacing here instead of relying on margins */}
+        <div className="animate-marquee whitespace-nowrap flex items-center gap-16 md:gap-24 lg:gap-32" ref={marqueeRef}>
           {/* We duplicate the list to create the infinite illusion */}
           {[...clients, ...clients, ...clients].map((client, index) => (
             <div 
               key={`${client.name}-${index}`}
               onMouseEnter={handleLogoEnter}
               onMouseLeave={handleLogoLeave}
-              className="mx-16 md:mx-24 relative w-56 md:w-80 lg:w-96 h-28 md:h-40 lg:h-48 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer shrink-0"
+              // Removed fixed widths, adjusted height, and let width be auto-calculated
+              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center"
             >
-              <Image 
+              {/* Native img tag handles dynamic w-auto perfectly compared to Next.js strict fill bounding boxes */}
+              <img 
                 src={client.src} 
                 alt={`${client.name} logo`} 
-                fill 
-                className="object-contain p-4" /* Added p-4 to give the logos a little inner breathing room */
+                className="h-full w-auto object-contain"
               />
             </div>
           ))}
