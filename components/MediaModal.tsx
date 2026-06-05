@@ -13,9 +13,28 @@ export interface Media {
 export default function MediaModal({ media, onClose }: { media: Media[]; onClose: () => void }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false); // New Mute State
+  const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isControlsVisible, setIsControlsVisible] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showControls = useCallback(() => {
+    setIsControlsVisible(true);
+    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    
+    // Auto-hide after 3 seconds if playing
+    if (isPlaying) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setIsControlsVisible(false);
+      }, 3000);
+    }
+  }, [isPlaying]);
+
+  // Ensure controls pop back up if the video is paused
+  useEffect(() => {
+    if (!isPlaying) showControls();
+  }, [isPlaying, showControls]);
 
   const handleNext = useCallback(() => setActiveIdx((p) => (p + 1) % media.length), [media.length]);
   const handlePrev = useCallback(() => setActiveIdx((p) => (p - 1 + media.length) % media.length), [media.length]);
@@ -70,12 +89,20 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
     <motion.div 
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8"
+      onMouseMove={showControls}
+      onClick={showControls}
     >
-      <button onClick={onClose} className="absolute top-8 right-8 text-white hover:text-neon-green z-10">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
+      <div 
+        className="relative w-full max-w-6xl aspect-video bg-black/50 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center"
+        onMouseLeave={() => isPlaying && setIsControlsVisible(false)}
+      >
+        {/* Inner Close Button (Auto-hides with controls, always visible for images) */}
+        <div className={`absolute top-4 right-4 z-50 transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
+          <button onClick={onClose} className="p-3 bg-black/50 backdrop-blur-md rounded-full text-white hover:text-neon-green transition-colors">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
 
-      <div className="relative w-full max-w-6xl aspect-video bg-black/50 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.div key={activeIdx} initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="relative w-full h-full flex items-center justify-center">
             {currentMedia.type === "video" ? (
@@ -98,7 +125,7 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
         </AnimatePresence>
 
         {currentMedia.type === "video" && (
-          <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4">
+          <div className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4 transition-opacity duration-500 z-40 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
             <div className="w-full h-1 bg-white/20 rounded cursor-pointer" onClick={handleSeek}>
               <div className="h-full bg-neon-green rounded" style={{ width: `${progress}%` }} />
             </div>
@@ -123,10 +150,10 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
       </div>
 
       {media.length > 1 && (
-        <>
-          <button onClick={handlePrev} className="absolute left-4 md:left-12 text-white/50 hover:text-neon-green p-4"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button onClick={handleNext} className="absolute right-4 md:right-12 text-white/50 hover:text-neon-green p-4"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></button>
-        </>
+        <div className={`transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
+          <button onClick={(e) => { e.stopPropagation(); handlePrev(); }} className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-4 z-50"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button onClick={(e) => { e.stopPropagation(); handleNext(); }} className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-4 z-50"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
       )}
     </motion.div>
   );
