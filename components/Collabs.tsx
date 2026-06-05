@@ -93,28 +93,6 @@ function WorkCard({ collab, onClick }: { collab: CollabData; index: number; onCl
       .catch(err => console.error("Failed to load media", err));
   }, [collab.folders, collab.featuredMedia]);
 
-  // Advanced Auto-carousel logic: 60s Featured Media Override
-  const [phase, setPhase] = useState<"featured" | "carousel">("featured");
-
-  useEffect(() => {
-    if (media.length <= 1) return;
-
-    if (phase === "featured") {
-      // Wait exactly 60 seconds, then transition to normal fast carousel
-      const timer = setTimeout(() => {
-        setPhase("carousel");
-        setActiveIdx((prev) => (prev + 1) % media.length);
-      }, 60000); 
-      return () => clearTimeout(timer);
-    } else {
-      // Normal 2 second loop
-      const interval = setInterval(() => {
-        setActiveIdx((prev) => (prev + 1) % media.length);
-      }, 2000); 
-      return () => clearInterval(interval);
-    }
-  }, [media.length, phase]);
-
   const activeMedia = media[activeIdx];
 
   return (

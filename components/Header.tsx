@@ -1,9 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const navLinks = [
+    { name: "Collabs", href: "#collabs" },
+    { name: "Club", href: "#club" },
+    { name: "Clients", href: "#clients" },
+    { name: "Crew", href: "#crew" },
+    { name: "Contact", href: "#contact" },
+  ];
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-dark-grey">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -12,6 +27,7 @@ export default function Header() {
           {/* Logo Container with Hover Reveal */}
           <Link 
             href="/" 
+            onClick={closeMenu}
             className="group relative flex items-center h-full min-w-[120px]"
             aria-label="taest. home"
           >
@@ -36,61 +52,66 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link 
-              href="#collabs" 
-              className="text-white text-sm font-medium hover:text-neon-green transition-colors"
-            >
-              Collabs
-            </Link>
-            <Link 
-              href="#club" 
-              className="text-white text-sm font-medium hover:text-neon-green transition-colors"
-            >
-              Club
-            </Link>
-            <Link 
-              href="#clients" 
-              className="text-white text-sm font-medium hover:text-neon-green transition-colors"
-            >
-              Clients
-            </Link>
-            <Link 
-              href="#crew" 
-              className="text-white text-sm font-medium hover:text-neon-green transition-colors"
-            >
-              Crew
-            </Link>
-            <Link 
-              href="#contact" 
-              className="text-white text-sm font-medium hover:text-neon-green transition-colors"
-            >
-              Contact
-            </Link>
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name}
+                href={link.href} 
+                className="text-white text-sm font-medium hover:text-neon-green transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
           </nav>
 
           {/* Mobile menu button */}
           <button 
-            className="md:hidden text-white p-2 ml-auto"
-            aria-label="Open menu"
+            onClick={toggleMenu}
+            className="md:hidden text-white p-2 ml-auto z-[60] relative"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            >
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
+            {isMenuOpen ? (
+              // X Icon
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              // Hamburger Icon
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-20 left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-dark-grey md:hidden"
+          >
+            <nav className="flex flex-col p-6 gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="text-white text-xl font-medium hover:text-neon-green transition-colors w-full border-b border-white/10 pb-4 last:border-0"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

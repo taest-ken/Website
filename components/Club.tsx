@@ -51,23 +51,30 @@ const clubItems: ClubData[] = [
     folders: [{ path: "club_media/mixers", sort: "ordered" }],
   },
   {
-    id: "bloopers",
-    title: "Bloopers",
-    tagline: "Unfiltered access.",
+    id: "muscle-up",
+    title: "Muscle up",
+    tagline: "Flex your creative muscles.",
     size: "md:col-span-1 md:row-span-1",
-    folders: [
-      { path: "club_media/bloopers/vid", sort: "ordered" },
-      { path: "club_media/bloopers/ai slop", sort: "random" }
-    ],
+    folders: [{ path: "club_media/muscle-up", sort: "random" }], // Update this path to match your S3 structure
   },
   {
     id: "trust",
     title: "In taest we trust",
     tagline: "Develop, expand, evolve your taste.",
-    size: "md:col-span-2 md:row-span-1",
+    size: "md:col-span-1 md:row-span-1", // Shrunk to 1x1
     folders: [
       { path: "club_media/in-taest-we-trust/1", sort: "random" },
       { path: "club_media/in-taest-we-trust/2", sort: "random" }
+    ],
+  },
+  {
+    id: "bloopers",
+    title: "Bloopers",
+    tagline: "Unfiltered access.",
+    size: "md:col-span-1 md:row-span-1", // Moved beside Trust
+    folders: [
+      { path: "club_media/bloopers/vid", sort: "ordered" },
+      { path: "club_media/bloopers/ai slop", sort: "random" }
     ],
   },
   {
@@ -99,13 +106,13 @@ function BentoCard({ item, onClick }: { item: ClubData; onClick: (media: Media[]
       .catch(err => console.error("Failed to load media", err));
   }, [item.folders]);
 
-  // Organic, staggered timers (2s to 4s random flip delay)
+  // Organic, staggered timers (3s to 5s random flip delay)
   useEffect(() => {
     if (media.length <= 1) return;
     let timeoutId: NodeJS.Timeout;
 
     const loop = () => {
-      const delay = Math.random() * 2000 + 2000;
+      const delay = Math.random() * 2000 + 3000;
       timeoutId = setTimeout(() => {
         setActiveIdx((prev) => (prev + 1) % media.length);
         loop();
@@ -130,7 +137,7 @@ function BentoCard({ item, onClick }: { item: ClubData; onClick: (media: Media[]
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }} // Snappier crossfade
+            transition={{ duration: 0.3 }} // Snappier crossfade
             className="absolute inset-0"
           >
             {activeMedia?.type === "video" ? (

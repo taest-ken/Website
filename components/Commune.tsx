@@ -1,9 +1,12 @@
 "use client";
 
+import Image from "next/image";
+
 interface BioModuleProps {
   name: string;
   role: string;
   initials: string;
+  image?: string; // Add optional image property
   bio: string;
   socials?: {
     instagram?: string;
@@ -11,13 +14,22 @@ interface BioModuleProps {
   };
 }
 
-function BioModule({ name, role, initials, bio, socials }: BioModuleProps) {
+function BioModule({ name, role, initials, image, bio, socials }: BioModuleProps) {
   return (
     <article className="group p-6 border border-dark-grey rounded-lg bg-secondary/20 hover:border-neon-green/50 transition-colors duration-300 flex flex-col h-full">
       <div className="flex items-start gap-4">
-        {/* Avatar placeholder */}
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-neon-green/20 to-secondary flex items-center justify-center shrink-0 border border-dark-grey group-hover:border-neon-green/50 transition-colors">
-          <span className="text-lg font-bold text-white">{initials}</span>
+        {/* Avatar Rendering */}
+        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-neon-green/20 to-secondary flex items-center justify-center shrink-0 border border-dark-grey group-hover:border-neon-green/50 transition-colors overflow-hidden">
+          {image ? (
+            <Image 
+              src={image} 
+              alt={`${name} profile picture`} 
+              fill 
+              className="object-cover" 
+            />
+          ) : (
+            <span className="text-lg font-bold text-white relative z-10">{initials}</span>
+          )}
         </div>
         
         {/* Bio content */}
@@ -77,9 +89,10 @@ const team = [
     name: "Ashish Adpur",
     role: "Founder & CCO",
     initials: "AA",
+    image: "/crew/ashish.jpg", // Add exact filename from public/crew
     bio: "Agency creative head with 12+ years of brand building experience across India's hottest agencies and most sought after brands.",
     socials: {
-      instagram: "https://www.instagram.com/sheeshxkebab?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", // Replace with actual links
+      instagram: "https://www.instagram.com/sheeshxkebab?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
       linkedin: "https://www.linkedin.com/in/ashish-adpur-0218b8195/",
     }
   },
@@ -87,6 +100,7 @@ const team = [
     name: "Sakshi Batra",
     role: "Cofounder & CGO",
     initials: "SB",
+    image: "/crew/sakshi.jpg", // Add exact filename from public/crew
     bio: "Ex brand manager at an Indian blue chip conglomerate, with 10+ years of new age brand building experience.",
     socials: {
       instagram: "https://www.instagram.com/sakshouka?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
@@ -97,6 +111,7 @@ const team = [
     name: "Ken Jose",
     role: "Creative Technologist",
     initials: "KJ",
+    image: "/crew/ken.jpg", // Add exact filename from public/crew
     bio: "Creative at heart, technologist by degree, solving marketing challenges by creatively using the best of tech.",
     socials: {
       instagram: "https://www.instagram.com/im_kenough11?igsh=MWZ4bmJjdmg3eGNyMA==",
@@ -107,6 +122,7 @@ const team = [
     name: "Cherry Hazare",
     role: "Design Associate",
     initials: "CH",
+    image: "/crew/cherry.jpg", // Add exact filename from public/crew
     bio: "Our in house designer, social media associate for all things visual.",
     socials: {
       instagram: "https://www.instagram.com/cherryhazare?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
@@ -141,6 +157,7 @@ export default function Commune() {
               name={member.name}
               role={member.role}
               initials={member.initials}
+              image={member.image} // Pass the image prop!
               bio={member.bio}
               socials={member.socials}
             />
