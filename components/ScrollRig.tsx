@@ -20,7 +20,7 @@ const P_SWAP_END = 0.30;   // Clean swap complete
 const P_SCRUB_END = 0.90;  // Canvas scrub finishes
 const P_LOCK_END = 0.90;   // Handshake triggers exactly as scrub ends
 
-const OUTRO_FRAME_COUNT = 119; // set to your actual extracted frame count
+const OUTRO_FRAME_COUNT = 114; // set to your actual extracted frame count
 
 export default function ScrollRig({ children }: ScrollRigProps) {
   const isMobile = useIsMobile();
