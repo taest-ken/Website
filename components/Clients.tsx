@@ -86,16 +86,16 @@ export default function Clients() {
       {/* Interactive Container that tracks the mouse */}
       <div className="relative flex overflow-x-hidden py-8">
         {/* The marquee wrapper */}
-        {/* Added wider gap spacing to give logos more breathing room */}
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-24 md:gap-32 lg:gap-48" ref={marqueeRef}>
+        {/* Removed the 'gap-*' property to fix the CSS math glitch */}
+        <div className="animate-marquee whitespace-nowrap flex items-center" ref={marqueeRef}>
           {/* Duplicated 6 times to ensure it never breaks on ultra-wide screens */}
           {[...clients, ...clients, ...clients, ...clients, ...clients, ...clients].map((client, index) => (
             <div 
               key={`${client.name}-${index}`}
               onMouseEnter={handleLogoEnter}
               onMouseLeave={handleLogoLeave}
-              // Apply the custom scale class here dynamically!
-              className={`relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center ${client.scale || "scale-100"}`}
+              // Added pr-24 md:pr-32 lg:pr-48 here to perfectly bind the spacing to each item!
+              className={`relative h-16 md:h-24 lg:h-28 flex-shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer flex items-center justify-center pr-24 md:pr-32 lg:pr-48 ${client.scale || "scale-100"}`}
             >
               {/* Native img tag handles dynamic w-auto perfectly compared to Next.js strict fill bounding boxes */}
               <img 
