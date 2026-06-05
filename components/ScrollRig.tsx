@@ -6,6 +6,7 @@ import {
   useTransform,
   useMotionValueEvent,
   motion,
+  useSpring,
 } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -13,11 +14,11 @@ interface ScrollRigProps {
   children: ReactNode;
 }
 
-// Condensed breakpoints for a 400vh height to prevent dead-zones
-const P_SWAP_START = 0.25; // Loop starts fading out
-const P_SWAP_END = 0.40;   // Clean swap complete
-const P_SCRUB_END = 0.85;  // Canvas scrub finishes
-const P_LOCK_END = 0.95;   // Rig pushes up
+// Expanded breakpoints for a 500vh height to eliminate dead-zones
+const P_SWAP_START = 0.15; // Loop starts fading out
+const P_SWAP_END = 0.30;   // Clean swap complete
+const P_SCRUB_END = 0.90;  // Canvas scrub finishes
+const P_LOCK_END = 0.90;   // Handshake triggers exactly as scrub ends
 
 const OUTRO_FRAME_COUNT = 119; // set to your actual extracted frame count
 
@@ -124,7 +125,10 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     else img.onload = draw;
   }, [isMobile]);
 
-  // 4. Scrubbing Logic (Desktop Only)
+  // 4. Smooth Scrubbing Logic (Desktop Only)
+  const smoothFrame = useSpring(0, { stiffness: 150, damping: 25, restDelta: 0.5 });
+
+  // Update the spring target based on scroll position
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     if (isMobile || !imagesRef.current.length) return;
     
@@ -133,11 +137,17 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       Math.min(1, (latest - P_SWAP_END) / (P_SCRUB_END - P_SWAP_END)),
     );
     
-    const frameIndex = Math.min(
+    const targetFrame = Math.min(
       Math.floor(sequenceProgress * imagesRef.current.length),
       imagesRef.current.length - 1,
     );
     
+    smoothFrame.set(targetFrame);
+  });
+
+  // Draw the frame whenever the spring ticks
+  useMotionValueEvent(smoothFrame, 'change', (latest) => {
+    const frameIndex = Math.round(latest);
     if (frameIndex !== lastFrameRef.current) {
       lastFrameRef.current = frameIndex;
       drawFrame(frameIndex);
@@ -181,7 +191,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       <motion.div
         ref={containerRef}
         style={{
-          height: '400vh',
+          height: '500vh',
           position: 'relative',
           pointerEvents: containerPointerEvents,
           visibility: containerVisibility,
