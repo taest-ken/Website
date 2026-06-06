@@ -208,6 +208,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
             height: '100vh',
             width: '100%',
             overflow: 'hidden',
+            backgroundColor: '#000',
             translateY: stickyTranslateY,
           }}
         >
@@ -219,16 +220,15 @@ export default function ScrollRig({ children }: ScrollRigProps) {
             playsInline
             loop
             style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              opacity: videoOpacity,
-              display: videoDisplay,
-              zIndex: 1,
-            }}
-          />
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain', // Matches the width of the screen without cropping
+                opacity: outroOpacity,
+                zIndex: 2,
+              }}
+            />
 
           {/* Phase 3: Mobile Fallback (Plays video instead of scrubbing) */}
           {isMobile ? (
