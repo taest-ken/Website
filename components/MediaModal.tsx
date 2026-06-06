@@ -40,13 +40,21 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
   const handlePrev = useCallback(() => setActiveIdx((p) => (p - 1 + media.length) % media.length), [media.length]);
 
   useEffect(() => {
+    // 1. Tell the Header to slide up and hide
+    window.dispatchEvent(new Event("modalOpen"));
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "ArrowLeft") handlePrev();
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      // 2. Tell the Header to slide back down
+      window.dispatchEvent(new Event("modalClose"));
+    };
   }, [handleNext, handlePrev, onClose]);
 
   if (!media || media.length === 0) return null;
@@ -90,14 +98,25 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8"
       onMouseMove={showControls}
-      onClick={showControls}
     >
+      {/* PHASE 2: RED ZONES - Invisible absolute sidebars for closing */}
+      <div className="absolute top-0 bottom-0 left-0 w-16 md:w-32 z-10 cursor-pointer" onClick={onClose} />
+      <div className="absolute top-0 bottom-0 right-0 w-16 md:w-32 z-10 cursor-pointer" onClick={onClose} />
+
+      {/* PHASE 2: GREEN ZONE - The entire main container acts as a play/pause toggle */}
       <div 
-        className="relative w-full max-w-6xl aspect-video bg-black/50 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center"
+        className="relative w-full max-w-6xl aspect-video bg-black/50 rounded-xl overflow-hidden shadow-2xl flex items-center justify-center cursor-pointer"
         onMouseLeave={() => isPlaying && setIsControlsVisible(false)}
+        onClick={() => {
+          showControls();
+          if (currentMedia.type === "video") togglePlay();
+        }}
       >
-        {/* Inner Close Button (Auto-hides with controls, always visible for images) */}
-        <div className={`absolute top-4 right-4 z-50 transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
+        {/* Inner Close Button (Stop propagation so clicking the cross doesn't pause the video!) */}
+        <div 
+          className={`absolute top-4 right-4 z-50 transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button onClick={onClose} className="p-3 bg-black/50 backdrop-blur-md rounded-full text-white hover:text-neon-green transition-colors">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
@@ -115,8 +134,8 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
                 onEnded={handleNext} 
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onClick={togglePlay}
-                className="max-w-full max-h-full cursor-pointer" 
+                // Removed onClick={togglePlay} here, the Green Zone parent div now handles it!
+                className="max-w-full max-h-full" 
               />
             ) : (
               <Image src={currentMedia.src} alt="Media" fill className="object-contain" />
@@ -125,7 +144,11 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
         </AnimatePresence>
 
         {currentMedia.type === "video" && (
-          <div className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4 transition-opacity duration-500 z-40 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}>
+          // Stop propagation here so clicking the scrub bar doesn't trigger a pause!
+          <div 
+            className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4 transition-opacity duration-500 z-40 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="w-full h-1 bg-white/20 rounded cursor-pointer" onClick={handleSeek}>
               <div className="h-full bg-neon-green rounded" style={{ width: `${progress}%` }} />
             </div>

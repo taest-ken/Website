@@ -11,6 +11,22 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Listen for the custom events dispatched by the MediaModal
+  useEffect(() => {
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => setIsModalOpen(false);
+
+    window.addEventListener("modalOpen", handleModalOpen);
+    window.addEventListener("modalClose", handleModalClose);
+
+    return () => {
+      window.removeEventListener("modalOpen", handleModalOpen);
+      window.removeEventListener("modalClose", handleModalClose);
+    };
+  }, []);
+
   const navLinks = [
     { name: "Collabs", href: "#collabs" },
     { name: "Club", href: "#club" },
@@ -20,7 +36,12 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-dark-grey">
+    <motion.header 
+      initial={{ y: 0 }}
+      animate={{ y: isModalOpen ? "-100%" : "0%" }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-dark-grey"
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -113,6 +134,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
