@@ -127,7 +127,7 @@ export default function Clients() {
         }
         .animate-marquee {
           /* 40s is slow enough to read, fast enough to feel alive */
-          animation: marquee 40s linear infinite; 
+          animation: marquee 80s linear infinite; 
         }
         /* REMOVED: .animate-marquee:hover { animation-play-state: paused; } */
         /* JS now handles pausing so it doesn't conflict with the playbackRate logic */
