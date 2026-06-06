@@ -208,7 +208,6 @@ export default function ScrollRig({ children }: ScrollRigProps) {
             height: '100vh',
             width: '100%',
             overflow: 'hidden',
-            backgroundColor: '#000',
             translateY: stickyTranslateY,
           }}
         >
@@ -224,9 +223,10 @@ export default function ScrollRig({ children }: ScrollRigProps) {
                 inset: 0,
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain', // Matches the width of the screen without cropping
-                opacity: outroOpacity,
-                zIndex: 2,
+                objectFit: 'cover',
+                opacity: videoOpacity,
+                display: videoDisplay,
+                zIndex: 1,
               }}
             />
 
