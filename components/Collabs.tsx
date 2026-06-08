@@ -68,6 +68,16 @@ const collabsData: CollabData[] = [
     folders: [{ path: "collabs_media/motion-ident", sort: "ordered" }],
   },
   {
+    headline: "Vicks Inhaler with Sparkt",
+    subhead: "Creative Direction, Scriptwriting, Animatics, Jingle & STBs",
+    featuredMedia: "animatics/thumbnail.png",
+    description: "A demonstration of the agency's plug and play leadership capabilities displayed via co-creation of the campaign that looked to reimagine Vicks inhaler for a wider demographic.",
+    folders: [
+      { path: "collabs_media/vicks/animatics", sort: "ordered" },
+      { path: "collabs_media/vicks/sketches", sort: "ordered" },
+    ],
+  },
+  {
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
     featuredMedia: "thumbnail.png",
