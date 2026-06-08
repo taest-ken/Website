@@ -26,7 +26,7 @@ const collabsData: CollabData[] = [
     headline: "Birla Estates x Gujarat Titans with Trailer Park Group",
     subhead: "IPL Sponsorship Campaign",
     featuredMedia: "film/2.mp4",
-    description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans, but to shift the GT fandom's loyalty and respect towards BE. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
+    description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL 2026 go live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans. It was to repackage the brand's ''life designed'' philosophy from a sporting lens. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
       { path: "collabs_media/birla-gt/film", sort: "ordered" },
       { path: "collabs_media/birla-gt/stat", sort: "ordered" },
@@ -37,7 +37,7 @@ const collabsData: CollabData[] = [
     headline: "Google AI Mode with Trailer Park Group",
     subhead: "AICD OOH Campaign",
     featuredMedia: "google-ai/1/thumbnail-motion.mp4",
-    description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's heartland.",
+    description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's dreams and desires.",
     folders: [
       { path: "collabs_media/google-ai/1", sort: "ordered" },
       { path: "collabs_media/google-ai/2/creatives", sort: "ordered" },
@@ -57,7 +57,7 @@ const collabsData: CollabData[] = [
     headline: "Taest HumAIne Kitchen Inhouse",
     subhead: "AI Creative Direction",
     featuredMedia: "thumbnail.png",
-    description: "A demonstration of the agency’s AI creative direction capabilities displayed via our stunning social posts developed for our socials.",
+    description: "A demonstration of the agency's AI creative direction capabilities displayed via our stunning social posts.",
     folders: [{ path: "collabs_media/creative-direction", sort: "ordered" }],
   },
   {
@@ -81,7 +81,7 @@ const collabsData: CollabData[] = [
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
     featuredMedia: "thumbnail.png",
-    description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland, as well as through work developed proactively for taest's insta handle.",
+    description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland.",
     folders: [{ path: "collabs_media/woodland", sort: "ordered" }],
   },
 ];
