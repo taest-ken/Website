@@ -115,7 +115,7 @@ const team = [
     name: "Ken Jose",
     role: "Creative Technologist",
     initials: "KJ",
-    image: "/crew/ken.jpg", // Add exact filename from public/crew
+    image: "/crew/ken.jpeg", // Add exact filename from public/crew
     bio: "Creative at heart, technologist by degree, solving marketing challenges by creatively using the best of tech.",
     socials: {
       instagram: "https://www.instagram.com/im_kenough11?igsh=MWZ4bmJjdmg3eGNyMA==",
