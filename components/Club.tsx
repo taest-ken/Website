@@ -55,7 +55,7 @@ const clubItems: ClubData[] = [
     title: "Muscle up",
     tagline: "Flex your creative muscles.",
     size: "md:col-span-1 md:row-span-1",
-    folders: [{ path: "club_media/muscle-up", sort: "random" }], // Update this path to match your S3 structure
+    folders: [{ path: "club_media/muscle-up", sort: "ordered" }], // Update this path to match your S3 structure
   },
   {
     id: "trust",
