@@ -191,7 +191,7 @@ export default function Club() {
             </p>
             {/* Stepped down font sizes to text-lg md:text-xl */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              An era where brands climb the top of the social ladder of influence, relevance and superstardom, all on the back of their exquisite, unmatched taste.
+              An era where brands climb the top of the social ladder of influence, relevance and superstardom. All on the back of their exquisite, unmatched taste.
             </p>
           </div>
         </div>
