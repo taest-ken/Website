@@ -26,7 +26,7 @@ const collabsData: CollabData[] = [
     headline: "Birla Estates x Gujarat Titans with Trailer Park Group",
     subhead: "IPL Sponsorship Campaign",
     // Now an absolute path - can be placed anywhere in the public folder!
-    featuredMedia: "public/collabs_media/birla-gt/thumbnail.mp4",
+    featuredMedia: "collabs_media/birla-gt/thumbnail.mp4",
     description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL 2026 go live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans. It was to repackage the brand's ''life designed'' philosophy from a sporting lens. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
       { path: "collabs_media/birla-gt/film", sort: "ordered" },
@@ -108,7 +108,8 @@ function WorkCard({ collab, onClick }: { collab: CollabData; index: number; onCl
   // 2. Independently resolve the thumbnail using the direct path, with a fallback to the first fetched item
   const displayMedia = collab.featuredMedia 
     ? { 
-        src: collab.featuredMedia, 
+        // We MUST prepend the S3 base URL here so it knows to fetch from AWS, not local storage!
+        src: `${process.env.NEXT_PUBLIC_S3_BASE_URL}${collab.featuredMedia}`, 
         // Simple Regex to auto-detect if the string is a video file
         type: /\.(mp4|webm|ogg|mov)$/i.test(collab.featuredMedia) ? "video" : "image" 
       }
