@@ -25,7 +25,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Birla Estates x Gujarat Titans with Trailer Park Group",
     subhead: "IPL Sponsorship Campaign",
-    featuredMedia: "film/2.mp4",
+    featuredMedia: "film/thumbnail.mp4",
     description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL 2026 go live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans. It was to repackage the brand's ''life designed'' philosophy from a sporting lens. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
       { path: "collabs_media/birla-gt/film", sort: "ordered" },
