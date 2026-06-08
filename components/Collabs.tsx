@@ -57,7 +57,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Taest HumAIne Kitchen Inhouse",
     subhead: "AI Creative Direction",
-    featuredMedia: "/collabs_media/creative-direction/thumbnail.png",
+    featuredMedia: "/collabs_media/creative-direction/play/2.png",
     description: "A demonstration of the agency's AI creative direction capabilities displayed via our stunning social posts.",
     folders: [{ path: "collabs_media/creative-direction/play", sort: "ordered" }],
   },
