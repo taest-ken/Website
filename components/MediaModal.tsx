@@ -144,10 +144,10 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
         </AnimatePresence>
 
         {currentMedia.type === "video" && (
-          // Stop propagation here so clicking the scrub bar doesn't trigger a pause!
+          // Added showControls() so interacting with any bottom controls resets the inactivity timer
           <div 
             className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-4 transition-opacity duration-500 z-40 ${isControlsVisible ? 'opacity-100' : 'opacity-0'}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); showControls(); }}
           >
             <div className="w-full h-1 bg-white/20 rounded cursor-pointer" onClick={handleSeek}>
               <div className="h-full bg-neon-green rounded" style={{ width: `${progress}%` }} />
@@ -174,8 +174,23 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
 
       {media.length > 1 && (
         <div className={`transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
-          <button onClick={(e) => { e.stopPropagation(); handlePrev(); }} className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-4 z-50"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button onClick={(e) => { e.stopPropagation(); handleNext(); }} className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-4 z-50"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button 
+            // Added showControls() to reset the timer on click
+            onClick={(e) => { e.stopPropagation(); showControls(); handlePrev(); }} 
+            // Increased padding to p-8 md:p-12 to massively expand the clickable area, and shifted left to keep the icon visually balanced
+            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-8 md:p-12 z-50"
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          
+          <button 
+            // Added showControls() to reset the timer on click
+            onClick={(e) => { e.stopPropagation(); showControls(); handleNext(); }} 
+            // Increased padding to p-8 md:p-12 to massively expand the clickable area, and shifted right to keep the icon visually balanced
+            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-8 md:p-12 z-50"
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
       )}
     </motion.div>
