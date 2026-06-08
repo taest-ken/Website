@@ -56,7 +56,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Taest HumAIne Kitchen Inhouse",
     subhead: "AI Creative Direction",
-    featuredMedia: "1.png",
+    featuredMedia: "thumbnail.png",
     description: "A demonstration of the agency’s AI creative direction capabilities displayed via our stunning social posts developed for our socials.",
     folders: [{ path: "collabs_media/creative-direction", sort: "ordered" }],
   },
@@ -70,7 +70,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
-    featuredMedia: "1.png",
+    featuredMedia: "thumbnail.png",
     description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland, as well as through work developed proactively for taest's insta handle.",
     folders: [{ path: "collabs_media/woodland", sort: "ordered" }],
   },
