@@ -173,20 +173,20 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
       </div>
 
       {media.length > 1 && (
-        // FIXED: Added 'relative z-50' so the wrapper never falls behind the z-10 Red Zones during the opacity transition!
-        <div className={`relative z-50 transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
+        // FIXED: Using 'absolute inset-0 pointer-events-none' stretches this layer across the whole screen!
+        <div className={`absolute inset-0 z-50 pointer-events-none transition-opacity duration-500 ${isControlsVisible || currentMedia.type === "image" ? 'opacity-100' : 'opacity-0'}`}>
           <button 
             onClick={(e) => { e.stopPropagation(); showControls(); handlePrev(); }} 
-            // FIXED: Increased padding to p-12 md:p-16 to create a massive vertical blue zone hitbox
-            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-12 md:p-16 z-50"
+            // FIXED: Added pointer-events-auto so clicks register, and kept the massive blue zone hitboxes
+            className="pointer-events-auto absolute left-0 md:left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-12 md:p-16"
           >
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
           
           <button 
             onClick={(e) => { e.stopPropagation(); showControls(); handleNext(); }} 
-            // FIXED: Increased padding to p-12 md:p-16 to create a massive vertical blue zone hitbox
-            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-12 md:p-16 z-50"
+            // FIXED: Added pointer-events-auto so clicks register, and kept the massive blue zone hitboxes
+            className="pointer-events-auto absolute right-0 md:right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-neon-green p-12 md:p-16"
           >
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
           </button>
