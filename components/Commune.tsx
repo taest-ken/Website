@@ -93,7 +93,7 @@ const team = [
     name: "Ashish Adpur",
     role: "Founder & CCO",
     initials: "AA",
-    image: "/crew/ashish.jpg", // Add exact filename from public/crew
+    image: "/crew/ashish.jpeg", // Add exact filename from public/crew
     bio: "Agency creative head with 12+ years of brand building experience across India's hottest agencies and most sought after brands.",
     socials: {
       instagram: "https://www.instagram.com/sheeshxkebab?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
@@ -104,7 +104,7 @@ const team = [
     name: "Sakshi Batra",
     role: "Cofounder & CGO",
     initials: "SB",
-    image: "/crew/sakshi.jpg", // Add exact filename from public/crew
+    image: "/crew/sakshi.jpeg", // Add exact filename from public/crew
     bio: "Ex brand manager at an Indian blue chip conglomerate, with 10+ years of new age brand building experience.",
     socials: {
       instagram: "https://www.instagram.com/sakshouka?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
