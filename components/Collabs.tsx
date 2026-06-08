@@ -25,7 +25,6 @@ const collabsData: CollabData[] = [
   {
     headline: "Birla Estates x Gujarat Titans with Trailer Park Group",
     subhead: "IPL Sponsorship Campaign",
-    // Now an absolute path - can be placed anywhere in the public folder!
     featuredMedia: "/collabs_media/birla-gt/thumbnail.mp4",
     description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL 2026 go live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans. It was to repackage the brand's ''life designed'' philosophy from a sporting lens. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
@@ -41,10 +40,12 @@ const collabsData: CollabData[] = [
     description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's dreams and desires.",
     folders: [
       { path: "collabs_media/google-ai/1", sort: "ordered" },
+      { path: "collabs_media/google-ai/2/strat1", sort: "ordered" },
       { path: "collabs_media/google-ai/2/creatives", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/strategy", sort: "ordered" },
+      { path: "collabs_media/google-ai/2/strat2", sort: "ordered" },
+      { path: "collabs_media/google-ai/3/strat1", sort: "ordered" },
       { path: "collabs_media/google-ai/3/creatives", sort: "ordered" },
-      { path: "collabs_media/google-ai/3/strategy", sort: "ordered" }
+      { path: "collabs_media/google-ai/3/strat2", sort: "ordered" },
     ],
   },
   {
