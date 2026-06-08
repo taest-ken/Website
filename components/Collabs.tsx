@@ -25,7 +25,8 @@ const collabsData: CollabData[] = [
   {
     headline: "Birla Estates x Gujarat Titans with Trailer Park Group",
     subhead: "IPL Sponsorship Campaign",
-    featuredMedia: "film/thumbnail.mp4",
+    // Now an absolute path - can be placed anywhere in the public folder!
+    featuredMedia: "/collabs_media/birla-gt/thumbnail.mp4",
     description: "A brand building campaign for a legacy real estate player that came hot on the heels of the IPL 2026 go live date. The task wasn't just to put Birla Estates on the map as the principal sponsor of Gujarat Titans. It was to repackage the brand's ''life designed'' philosophy from a sporting lens. The result? A campaign that was built with all heart, played with all heart and loved with all heart.",
     folders: [
       { path: "collabs_media/birla-gt/film", sort: "ordered" },
@@ -36,7 +37,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Google AI Mode with Trailer Park Group",
     subhead: "AICD OOH Campaign",
-    featuredMedia: "google-ai/1/thumbnail-motion.mp4",
+    featuredMedia: "/collabs_media/google-ai/thumbnail-motion.mp4",
     description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's dreams and desires.",
     folders: [
       { path: "collabs_media/google-ai/1", sort: "ordered" },
@@ -49,28 +50,28 @@ const collabsData: CollabData[] = [
   {
     headline: "Taest Brand Book Inhouse",
     subhead: "Brand world building + Identity",
-    featuredMedia: "1.mp4",
+    featuredMedia: "/collabs_media/brand-book/1.mp4",
     description: "A demonstration of the agency's brand-world designing capabilities, displayed through a detailed immersion into our own branding & identity process.",
     folders: [{ path: "collabs_media/brand-book", sort: "ordered" }],
   },
   {
     headline: "Taest HumAIne Kitchen Inhouse",
     subhead: "AI Creative Direction",
-    featuredMedia: "thumbnail.png",
+    featuredMedia: "/collabs_media/creative-direction/thumbnail.png",
     description: "A demonstration of the agency's AI creative direction capabilities displayed via our stunning social posts.",
-    folders: [{ path: "collabs_media/creative-direction", sort: "ordered" }],
+    folders: [{ path: "collabs_media/creative-direction/play", sort: "ordered" }],
   },
   {
     headline: "Taest Motion Ident Inhouse",
     subhead: "Motion animation",
-    featuredMedia: "2.mp4",
+    featuredMedia: "/collabs_media/motion-ident/2.mp4",
     description: "A demonstration of the agency's motion graphics and animation capabilities displayed via taest's motion ident, designed in-house.",
     folders: [{ path: "collabs_media/motion-ident", sort: "ordered" }],
   },
   {
     headline: "Vicks Inhaler with Sparkt",
     subhead: "Creative Direction, Scriptwriting, Animatics, Jingle & STBs",
-    featuredMedia: "animatics/thumbnail.png",
+    featuredMedia: "/collabs_media/vicks/thumbnail.png",
     description: "A demonstration of the agency's plug and play leadership capability, displayed via co-creation of the campaign that set out to reimagine Vicks inhaler for a wider demographic.",
     folders: [
       { path: "collabs_media/vicks/animatics", sort: "ordered" },
@@ -80,17 +81,17 @@ const collabsData: CollabData[] = [
   {
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
-    featuredMedia: "thumbnail.png",
+    featuredMedia: "/collabs_media/woodland/thumbnail.png",
     description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland.",
-    folders: [{ path: "collabs_media/woodland", sort: "ordered" }],
+    folders: [{ path: "collabs_media/woodland/play", sort: "ordered" }],
   },
 ];
 
 // --- COMPONENT: AUTO-CAROUSEL CARD ---
 function WorkCard({ collab, onClick }: { collab: CollabData; index: number; onClick: (media: Media[]) => void }) {
-  const [activeIdx, setActiveIdx] = useState(0);
   const [media, setMedia] = useState<Media[]>([]);
 
+  // 1. Fetch the gallery media silently in the background (used only for the modal)
   useEffect(() => {
     const queryParams = new URLSearchParams({
       config: JSON.stringify(collab.folders)
@@ -99,40 +100,43 @@ function WorkCard({ collab, onClick }: { collab: CollabData; index: number; onCl
     fetch(`/api/media?${queryParams}`)
       .then(res => res.json())
       .then(data => {
-        if (data.media && data.media.length > 0) {
-          setMedia(data.media);
-          // Set the correct starting frame right when the data loads!
-          const featuredTarget = collab.featuredMedia;
-          const foundIndex = featuredTarget ? data.media.findIndex((m: Media) => m.src.includes(featuredTarget)) : -1;
-          setActiveIdx(foundIndex !== -1 ? foundIndex : 0);
-        }
+        if (data.media && data.media.length > 0) setMedia(data.media);
       })
       .catch(err => console.error("Failed to load media", err));
-  }, [collab.folders, collab.featuredMedia]);
+  }, [collab.folders]);
 
-  const activeMedia = media[activeIdx];
+  // 2. Independently resolve the thumbnail using the direct path, with a fallback to the first fetched item
+  const displayMedia = collab.featuredMedia 
+    ? { 
+        src: collab.featuredMedia, 
+        // Simple Regex to auto-detect if the string is a video file
+        type: /\.(mp4|webm|ogg|mov)$/i.test(collab.featuredMedia) ? "video" : "image" 
+      }
+    : media.length > 0 ? media[0] : null;
 
   return (
     <article 
-      onClick={() => onClick(media)}
+      onClick={() => onClick(media)} // Passes the full fetched array to the modal as usual!
       className="group relative w-full h-[400px] md:h-[500px] lg:h-[600px] border border-dark-grey rounded-lg overflow-hidden bg-secondary/30 flex flex-col shadow-lg cursor-pointer"
     >
       <div className="relative flex-1 min-h-0 bg-black border-b border-dark-grey overflow-hidden">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIdx}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            {activeMedia?.type === "video" ? (
-              <video src={activeMedia.src} autoPlay muted loop playsInline className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-            ) : (
-              <Image src={activeMedia?.src} alt={collab.headline} fill className="object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-            )}
-          </motion.div>
+          {displayMedia && (
+            <motion.div
+              key={displayMedia.src} // Safely keys to the source URL
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0"
+            >
+              {displayMedia.type === "video" ? (
+                <video src={displayMedia.src} autoPlay muted loop playsInline className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+              ) : (
+                <Image src={displayMedia.src} alt={collab.headline} fill className="object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+              )}
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
       
