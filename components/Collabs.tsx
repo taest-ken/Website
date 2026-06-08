@@ -36,7 +36,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Google AI Mode with Trailer Park Group",
     subhead: "AICD OOH Campaign",
-    featuredMedia: "google-ai/thumbnail-motion.mp4",
+    featuredMedia: "google-ai/1/thumbnail-motion.mp4",
     description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's heartland.",
     folders: [
       { path: "collabs_media/google-ai/1", sort: "ordered" },
