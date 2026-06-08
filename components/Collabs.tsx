@@ -81,7 +81,7 @@ const collabsData: CollabData[] = [
   {
     headline: "Woodland Winter '25 Lookbook",
     subhead: "AI Creative Direction",
-    featuredMedia: "/collabs_media/woodland/thumbnail.png",
+    featuredMedia: "/collabs_media/woodland/thumb.png",
     description: "Our AI creative direction and filmmaking capabilities displayed via work developed during the pre-production stage for Woodland.",
     folders: [{ path: "collabs_media/woodland/play", sort: "ordered" }],
   },
