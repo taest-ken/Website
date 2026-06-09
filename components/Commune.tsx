@@ -126,7 +126,7 @@ const team = [
     name: "Cherry Hazare",
     role: "Design Associate",
     initials: "CH",
-    image: "/crew/cherry.jpg", // Add exact filename from public/crew
+    image: "/crew/cherry.jpeg", // Add exact filename from public/crew
     bio: "Our in house designer, social media associate for all things visual.",
     socials: {
       instagram: "https://www.instagram.com/cherryhazare?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
