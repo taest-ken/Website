@@ -77,44 +77,61 @@ export default function Clients() {
         </h2>
       </div>
 
-      {/* Interactive Container: overflow-hidden kills the scrollbar, py-12 gives room for scale-160 */}
-      <div className="relative flex overflow-hidden py-12">
+      {/* Interactive Container: overflow-hidden kills the scrollbar, py-12 gives room for scaled logos */}
+      {/* ADDED: Responsive CSS variables to define our baseline heights across screen sizes */}
+      <div className="relative flex overflow-hidden py-12 [--base-h:4rem] md:[--base-h:6rem] lg:[--base-h:7rem]">
         
         {/* Track 1 */}
         <div className="animate-marquee w-max flex items-center shrink-0">
           {/* 4 loops guarantees it is wider than any 4K screen */}
-          {[...clients, ...clients, ...clients, ...clients].map((client, index) => (
-            <div 
-              key={`t1-${client.name}-${index}`}
-              onMouseEnter={handleLogoEnter}
-              onMouseLeave={handleLogoLeave}
-              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
-            >
-              <img 
-                src={client.src} 
-                alt={`${client.name} logo`} 
-                className={`h-full w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer ${client.scale || "scale-100"}`}
-              />
-            </div>
-          ))}
+          {[...clients, ...clients, ...clients, ...clients].map((client, index) => {
+            // Extract the number from your string (e.g., "scale-150" -> 1.5)
+            const scaleMatch = client.scale?.match(/\d+/);
+            const scaleMult = scaleMatch ? parseInt(scaleMatch[0]) / 100 : 1;
+
+            return (
+              <div 
+                key={`t1-${client.name}-${index}`}
+                onMouseEnter={handleLogoEnter}
+                onMouseLeave={handleLogoLeave}
+                // REMOVED: Fixed heights. The container now tightly wraps the scaled image.
+                className="relative flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
+              >
+                <img 
+                  src={client.src} 
+                  alt={`${client.name} logo`} 
+                  // ADDED: Inline style that scales the true DOM height mathematically
+                  style={{ height: `calc(var(--base-h) * ${scaleMult})` }}
+                  // REMOVED: The Tailwind scale class so it stops breaking layout flow
+                  className="w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Track 2 (Exact visual duplicate seamlessly following Track 1) */}
         <div className="animate-marquee w-max flex items-center shrink-0" aria-hidden="true">
-          {[...clients, ...clients, ...clients, ...clients].map((client, index) => (
-            <div 
-              key={`t2-${client.name}-${index}`}
-              onMouseEnter={handleLogoEnter}
-              onMouseLeave={handleLogoLeave}
-              className="relative h-16 md:h-24 lg:h-28 flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
-            >
-              <img 
-                src={client.src} 
-                alt={`${client.name} logo`} 
-                className={`h-full w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer ${client.scale || "scale-100"}`}
-              />
-            </div>
-          ))}
+          {[...clients, ...clients, ...clients, ...clients].map((client, index) => {
+            const scaleMatch = client.scale?.match(/\d+/);
+            const scaleMult = scaleMatch ? parseInt(scaleMatch[0]) / 100 : 1;
+
+            return (
+              <div 
+                key={`t2-${client.name}-${index}`}
+                onMouseEnter={handleLogoEnter}
+                onMouseLeave={handleLogoLeave}
+                className="relative flex-shrink-0 flex items-center justify-center pr-24 md:pr-32 lg:pr-48"
+              >
+                <img 
+                  src={client.src} 
+                  alt={`${client.name} logo`} 
+                  style={{ height: `calc(var(--base-h) * ${scaleMult})` }}
+                  className="w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
+                />
+              </div>
+            );
+          })}
         </div>
 
       </div>
