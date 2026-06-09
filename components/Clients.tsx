@@ -6,12 +6,12 @@ import { useRef } from "react";
 // Update these paths to match exactly what you name your files in the public/clients_media folder
 const clients = [
   { name: "Birla Estates", src: "/clients_media/birla-estates.svg", scale: "scale-130" },
-  { name: "Gujarat Titans", src: "/clients_media/gujarat-titans.png", scale: "scale-140" },
+  { name: "Gujarat Titans", src: "/clients_media/gujarat-titans.png", scale: "scale-150" },
   { name: "Google", src: "/clients_media/google.svg", scale: "scale-90" },
   { name: "Procter & Gamble", src: "/clients_media/pg.png", scale: "scale-125" },
   { name: "Trailer Park Group", src: "/clients_media/trailer-park-group.png", scale: "scale-170" },
   { name: "Sparkt LLP", src: "/clients_media/sparkt.png", scale: "scale-180" },
-  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png", scale: "scale-170" }
+  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png", scale: "scale-200" }
 ];
 
 export default function Clients() {
