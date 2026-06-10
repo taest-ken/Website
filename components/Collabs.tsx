@@ -178,7 +178,7 @@ export default function Collabs() {
                 Get access to <span className="text-white font-medium">plug & play creative, brand and strategic leadership</span> to bolster your in-house team. 
               </p>
               <p className="mb-6">
-                Cultural intelligence catch-ups, taste-maxing sessions for your team, invites to social mixers, creative tech capabilities/prototyping and access to a community of top industry talent.
+                Cultural intelligence catch-ups, tastemaxxing sessions for your team, invites to social mixers, creative tech capabilities/prototyping and access to a community of top industry talent.
               </p>
               <p className="text-neon-green font-medium">
                 Want to know more? Let&apos;s set up a call to explore synergies.
