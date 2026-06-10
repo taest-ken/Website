@@ -4,7 +4,12 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-[#54EB17] text-black">
+    <footer 
+      id="contact" 
+      className="text-black bg-cover bg-center bg-no-repeat"
+      // Note: Adjust this path to "/bio-bg.jpg" if the file is directly in the root of your public folder!
+      style={{ backgroundImage: "url('/images/bio-bg.jpg')" }}
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12">
           
