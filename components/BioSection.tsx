@@ -39,7 +39,7 @@ export default function BioSection() {
         {/* 4. The Manifesto Text */}
         {/* Reduced max-w-3xl to max-w-xl, and decreased text sizes */}
         <p className="text-black text-sm sm:text-base md:text-lg leading-relaxed max-w-5xl font-medium text-balance mx-auto">
-          A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world&apos;s most relevant people. We help you upgrade your <span className="font-accent text-lg md:text-xl ml-1">CLTRL OS</span>. Make work play. Expand your taste. All while building your brand a thriving space.
+          A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world's most relevant people. We offer plug & play creative and strategic leadership. All while building a thriving social circle for you, your brand and your clients.
         </p>
         
       </div>
