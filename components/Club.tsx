@@ -178,7 +178,7 @@ export default function Club() {
         {/* Module Header & Pitch */}
         <div className="mb-20">
           <span className="text-xs uppercase tracking-widest text-neon-green font-medium">
-            Culture Lab
+            Tastemaker's Club
           </span>
           <h2 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-8">
             Club

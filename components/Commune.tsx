@@ -148,7 +148,7 @@ export default function Commune() {
             The Crew
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            Meet the minds behind{" "}
+            Meet the brains behind{" "}
             <span className="text-white font-medium">taest.</span> — a collective of creative strategists, designers, and cultural architects.
           </p>
         </div>
