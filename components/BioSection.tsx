@@ -8,7 +8,7 @@ export default function BioSection() {
       
       {/* 1. The Textured Background */}
       <Image 
-        src="/images/bio-bg.png" 
+        src="/images/bio-bg.jpg" 
         alt="Textured Background" 
         fill 
         className="object-cover object-center z-0 opacity-90"
