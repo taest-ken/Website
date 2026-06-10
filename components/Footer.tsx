@@ -26,7 +26,7 @@ export default function Footer() {
             <div className="flex flex-col gap-6">
               {/* Changed leading-relaxed to leading-snug to tighten line spacing */}
               <p className="text-xl md:text-2xl font-medium max-w-lg leading-snug opacity-85">
-                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <span className="text-[#54EB17] font-black drop-shadow-sm">tomorrow&apos;s currency today.</span>
+                Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
             </div>
           </div>
@@ -43,8 +43,7 @@ export default function Footer() {
                 <input 
                   type="text" 
                   placeholder="Great work starts with great intros." 
-                  // UPDATED: placeholder:text-black/40 and placeholder:font-normal for that clean, thin look
-                  className="bg-transparent border-b border-black/30 placeholder:text-black/40 placeholder:font-normal py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                 />
               </div>
 
@@ -53,7 +52,7 @@ export default function Footer() {
                 <input 
                   type="text" 
                   placeholder="Help us find you where you're the most accessible and available." 
-                  className="bg-transparent border-b border-black/30 placeholder:text-black/40 placeholder:font-normal py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                 />
               </div>
 
@@ -62,14 +61,14 @@ export default function Footer() {
                 <input 
                   type="text" 
                   placeholder="How can we be of service?" 
-                  className="bg-transparent border-b border-black/30 placeholder:text-black/40 placeholder:font-normal py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                 />
               </div>
 
               <button 
                 type="submit" 
-                // UPDATED: rounded-lg, tighter padding, wider tracking, and a neon-green hover effect
-                className="bg-[#1A1A1A] text-white px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] hover:text-[#54EB17] transition-colors w-fit mt-4 flex items-center gap-3 rounded-lg shadow-sm"
+                // CHANGED: Defaulted text color to neon green, added scale transform and smooth ease-out transitions for the pop effect
+                className="bg-[#1A1A1A] text-[#54EB17] px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] transform hover:scale-105 transition-all duration-300 ease-out w-fit mt-4 flex items-center gap-3 rounded-lg shadow-md active:scale-98"
               >
                 LET&apos;S TALK 
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
