@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useCallback, type ReactNode } from 'react';
+import { useEffect, useRef, useCallback, useState, type ReactNode } from 'react';
 import {
   useScroll,
   useTransform,
   useMotionValueEvent,
   motion,
   useSpring,
+  AnimatePresence,
 } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import Loader from './Loader';
 
 interface ScrollRigProps {
   children: ReactNode;
@@ -24,6 +26,7 @@ const OUTRO_FRAME_COUNT = 5; // set to your actual extracted frame count
 
 export default function ScrollRig({ children }: ScrollRigProps) {
   const isMobile = useIsMobile();
+  const [isSiteReady, setIsSiteReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Refs
@@ -87,21 +90,66 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     }
   });
 
-  // 2. Preload Canvas Images (Desktop Only)
+  // Lock document scrolling while the loader is active
   useEffect(() => {
-    if (isMobile || !outroFrames.length) return;
-  
-    const imgs = outroFrames.map((src) => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
-  
-    imagesRef.current = imgs;
-    return () => {
-      imagesRef.current = [];
+    if (!isSiteReady) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isSiteReady]);
+
+  // 2. Master Gatekeeper (Preloads Canvas Images + Tracks Video Buffering)
+  useEffect(() => {
+    let isMounted = true;
+    let heroReady = false;
+    let secondaryReady = false;
+
+    const checkReady = () => {
+      if (heroReady && secondaryReady && isMounted) {
+        // Slight delay so the transition feels intentional and smooth
+        setTimeout(() => { if (isMounted) setIsSiteReady(true); }, 400);
+      }
     };
-  }, [outroFrames, isMobile]);
+
+    // Track Canvas Images (Desktop) or Outro Video (Mobile)
+    if (isMobile) {
+      const outroVid = outroVideoRef.current;
+      if (outroVid && outroVid.readyState < 3) {
+        outroVid.addEventListener('canplaythrough', () => {
+          secondaryReady = true; checkReady();
+        }, { once: true });
+      } else { secondaryReady = true; }
+    } else {
+      let loadedCount = 0;
+      imagesRef.current = outroFrames.map((src) => {
+        const img = new Image();
+        const onLoadOrError = () => {
+          loadedCount++;
+          if (loadedCount === outroFrames.length) { secondaryReady = true; checkReady(); }
+        };
+        img.onload = onLoadOrError;
+        img.onerror = onLoadOrError;
+        img.src = src;
+        return img;
+      });
+      if (outroFrames.length === 0) secondaryReady = true;
+    }
+
+    // Track Main Hero Video
+    const heroVid = videoRef.current;
+    if (heroVid && heroVid.readyState < 3) {
+      heroVid.addEventListener('canplaythrough', () => {
+        heroReady = true; heroVid.play().catch(() => {}); checkReady();
+      }, { once: true });
+    } else { heroReady = true; }
+
+    checkReady(); // Initial check if assets are already cached
+
+    // 6-second Safety Fallback (Forces open if user has a very bad connection)
+    const fallback = setTimeout(() => { if (isMounted) setIsSiteReady(true); }, 6000);
+
+    return () => { isMounted = false; clearTimeout(fallback); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   // 3. Canvas Drawer (Desktop Only)
   const drawFrame = useCallback((frameIndex: number) => {
@@ -158,21 +206,6 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     }
   });
 
-  // 5. Initial Playback Hydration
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-  
-    const onCanPlay = () => {
-      if (video.readyState >= 3) video.play().catch(() => {});
-    };
-  
-    if (video.readyState >= 3) onCanPlay();
-    else video.addEventListener('canplay', onCanPlay, { once: true });
-  
-    return () => video.removeEventListener('canplay', onCanPlay);
-  }, []);
-
   // 6. Canvas Resize Observer
   useEffect(() => {
     if (isMobile) return;
@@ -192,6 +225,10 @@ export default function ScrollRig({ children }: ScrollRigProps) {
 
   return (
     <>
+      <AnimatePresence>
+        {!isSiteReady && <Loader variant="hero" />}
+      </AnimatePresence>
+
       <motion.div
         ref={containerRef}
         style={{
