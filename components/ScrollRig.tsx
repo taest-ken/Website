@@ -31,7 +31,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
   
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
-  const outroVideoRef = useRef<HTMLVideoElement>(null); // Fallback for mobile
+  const mobileVideoRef = useRef<HTMLVideoElement>(null); // New Mobile Portrait Video
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const lastFrameRef = useRef<number>(-1);
@@ -65,27 +65,15 @@ export default function ScrollRig({ children }: ScrollRigProps) {
   // Only attempt to load image sequence if not on mobile
   const hasImageSequence = outroFrames.length > 0 && !isMobile;
 
-  // 1. Master Playback Controller
+  // 1. Master Playback Controller (Desktop Only)
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    // Control Hero Loop
+    if (isMobile) return; // Mobile auto-loops natively now!
     const video = videoRef.current;
     if (video) {
       if (latest < P_SWAP_END) {
         if (video.readyState >= 3 && video.paused) video.play().catch(() => {});
       } else if (!video.paused) {
         video.pause();
-      }
-    }
-
-    // Control Mobile Video Fallback
-    if (isMobile) {
-      const outroVideo = outroVideoRef.current;
-      if (outroVideo) {
-        if (latest >= P_SWAP_START && latest < P_LOCK_END) {
-          if (outroVideo.readyState >= 3 && outroVideo.paused) outroVideo.play().catch(() => {});
-        } else if (!outroVideo.paused) {
-          outroVideo.pause();
-        }
       }
     }
   });
@@ -119,14 +107,19 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       }
     };
 
-    // Track Canvas Images (Desktop) or Outro Video (Mobile)
+    // Track Canvas Images (Desktop) or Portrait Video (Mobile)
     if (isMobile) {
-      const outroVid = outroVideoRef.current;
-      if (outroVid && outroVid.readyState < 3) {
-        outroVid.addEventListener('canplaythrough', () => {
-          secondaryReady = true; checkReady();
+      const mobVid = mobileVideoRef.current;
+      if (mobVid && mobVid.readyState < 3) {
+        mobVid.addEventListener('canplaythrough', () => {
+          heroReady = true; // Mobile only needs this one video!
+          secondaryReady = true;
+          checkReady();
         }, { once: true });
-      } else { secondaryReady = true; }
+      } else { 
+        heroReady = true;
+        secondaryReady = true; 
+      }
     } else {
       let loadedCount = 0;
       imagesRef.current = outroFrames.map((src, index) => {
@@ -245,64 +238,58 @@ export default function ScrollRig({ children }: ScrollRigProps) {
         {!isSiteReady && <Loader variant="hero" />}
       </AnimatePresence>
 
-      <motion.div
-        ref={containerRef}
-        style={{
-          height: '500vh',
-          position: 'relative',
-          pointerEvents: containerPointerEvents,
-          visibility: containerVisibility,
-        }}
-      >
+      {isMobile ? (
+        /* --- MOBILE LAYOUT (100svh Static Loop) --- */
+        <div className="relative w-full h-[100svh] overflow-hidden bg-black z-10">
+          <video
+            ref={mobileVideoRef}
+            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-portrait-static-option.mp4`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            // object-cover ensures it perfectly fills the 9:16 screen
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ) : (
+        /* --- DESKTOP LAYOUT (500vh Scrub Rig) --- */
         <motion.div
+          ref={containerRef}
           style={{
-            position: 'sticky',
-            top: 0,
-            height: '100vh',
-            width: '100%',
-            overflow: 'hidden',
-            translateY: stickyTranslateY,
+            height: '500vh',
+            position: 'relative',
+            pointerEvents: containerPointerEvents,
+            visibility: containerVisibility,
           }}
         >
-          {/* Phase 1: Looping Background */}
-          <motion.video
-            ref={videoRef}
-            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hero-loop-optimized.mp4`}
-            muted
-            playsInline
-            loop
+          <motion.div
             style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                opacity: videoOpacity,
-                display: videoDisplay,
-                zIndex: 1,
-              }}
-            />
-
-          {/* Phase 3: Mobile Fallback (Plays video instead of scrubbing) */}
-          {isMobile ? (
+              position: 'sticky',
+              top: 0,
+              height: '100vh',
+              width: '100%',
+              overflow: 'hidden',
+              translateY: stickyTranslateY,
+            }}
+          >
             <motion.video
-              ref={outroVideoRef}
-              src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/transition-outro-scrub.mp4`}
+              ref={videoRef}
+              src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hero-loop-optimized.mp4`}
               muted
               playsInline
-              preload="auto"
+              loop
               style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                opacity: outroOpacity,
-                zIndex: 2,
-              }}
-            />
-          ) : (
-            /* Phase 3: Desktop Canvas Scrub */
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: videoOpacity,
+                  display: videoDisplay,
+                  zIndex: 1,
+                }}
+              />
             <motion.canvas
               ref={canvasRef}
               style={{
@@ -315,16 +302,16 @@ export default function ScrollRig({ children }: ScrollRigProps) {
                 display: hasImageSequence ? 'block' : 'none',
               }}
             />
-          )}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
 
-      {/* Phase 5: The Handshake */}
+      {/* STATIC CONTENT */}
       <motion.main
         id="static-content"
-        // Added relative z-20 to ensure perfect, gapless layer stacking
         className="bg-black min-h-screen relative z-20"
-        style={{ marginTop: '-100vh', y: staticContentY }}
+        // Desktop uses the negative margin overlap, Mobile flows naturally
+        style={isMobile ? {} : { marginTop: '-100vh', y: staticContentY }}
       >
         {children}
       </motion.main>
