@@ -107,7 +107,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     const checkReady = () => {
       if (heroReady && secondaryReady && isMounted) {
         const elapsed = Date.now() - startTime;
-        const remaining = Math.max(0, 3000 - elapsed); // Enforce strict 3-second minimum
+        const remaining = Math.max(0, 5000 - elapsed); // Enforce strict 3-second minimum
 
         setTimeout(() => { 
           if (isMounted) {
