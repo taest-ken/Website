@@ -102,11 +102,20 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     let isMounted = true;
     let heroReady = false;
     let secondaryReady = false;
+    const startTime = Date.now(); // Record exact mount time
 
     const checkReady = () => {
       if (heroReady && secondaryReady && isMounted) {
-        // Slight delay so the transition feels intentional and smooth
-        setTimeout(() => { if (isMounted) setIsSiteReady(true); }, 400);
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, 3000 - elapsed); // Enforce strict 3-second minimum
+
+        setTimeout(() => { 
+          if (isMounted) {
+            // Pre-paint the very first frame of the canvas before the loader lifts!
+            if (!isMobile) drawFrame(0);
+            setIsSiteReady(true); 
+          }
+        }, remaining);
       }
     };
 
@@ -120,10 +129,12 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       } else { secondaryReady = true; }
     } else {
       let loadedCount = 0;
-      imagesRef.current = outroFrames.map((src) => {
+      imagesRef.current = outroFrames.map((src, index) => {
         const img = new Image();
         const onLoadOrError = () => {
           loadedCount++;
+          // If the first frame specifically finishes loading, paint it instantly behind the scenes
+          if (index === 0 && isMounted) drawFrame(0);
           if (loadedCount === outroFrames.length) { secondaryReady = true; checkReady(); }
         };
         img.onload = onLoadOrError;
@@ -145,7 +156,12 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     checkReady(); // Initial check if assets are already cached
 
     // 6-second Safety Fallback (Forces open if user has a very bad connection)
-    const fallback = setTimeout(() => { if (isMounted) setIsSiteReady(true); }, 6000);
+    const fallback = setTimeout(() => { 
+      if (isMounted) {
+        if (!isMobile) drawFrame(0);
+        setIsSiteReady(true); 
+      }
+    }, 6000);
 
     return () => { isMounted = false; clearTimeout(fallback); };
   // eslint-disable-next-line react-hooks/exhaustive-deps

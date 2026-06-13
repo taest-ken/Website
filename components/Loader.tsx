@@ -25,7 +25,8 @@ export default function Loader({ variant = "hero" }: LoaderProps) {
         }`}
       >
         <video
-          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/collabs_media/motion-ident/2.mp4`}
+          // Localized asset for instant zero-latency loading
+          src="/assets/loader.mp4"
           autoPlay
           muted
           loop
