@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Loader from "./Loader";
 
 export type MediaType = "image" | "video";
 export interface Media {
@@ -12,6 +13,7 @@ export interface Media {
 
 export default function MediaModal({ media, onClose }: { media: Media[]; onClose: () => void }) {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [isMediaReady, setIsMediaReady] = useState(false); // ADDED: Media Loading State
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -36,8 +38,16 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
     if (!isPlaying) showControls();
   }, [isPlaying, showControls]);
 
-  const handleNext = useCallback(() => setActiveIdx((p) => (p + 1) % media.length), [media.length]);
-  const handlePrev = useCallback(() => setActiveIdx((p) => (p - 1 + media.length) % media.length), [media.length]);
+  // UPDATED: Reset isMediaReady to false immediately when changing files!
+  const handleNext = useCallback(() => {
+    setIsMediaReady(false);
+    setActiveIdx((p) => (p + 1) % media.length);
+  }, [media.length]);
+  
+  const handlePrev = useCallback(() => {
+    setIsMediaReady(false);
+    setActiveIdx((p) => (p - 1 + media.length) % media.length);
+  }, [media.length]);
 
   useEffect(() => {
     // 1. Tell the Header to slide up and hide
@@ -124,6 +134,12 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
 
         <AnimatePresence mode="wait">
           <motion.div key={activeIdx} initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="relative w-full h-full flex items-center justify-center">
+            
+            {/* Phase 3: The Micro-Loader (Trapped securely inside the modal container) */}
+            <AnimatePresence>
+              {!isMediaReady && <Loader variant="modal" />}
+            </AnimatePresence>
+
             {currentMedia.type === "video" ? (
               <video 
                 ref={videoRef} 
@@ -134,11 +150,19 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
                 onEnded={handleNext} 
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                // Removed onClick={togglePlay} here, the Green Zone parent div now handles it!
-                className="max-w-full max-h-full" 
+                // Tells the modal the browser has buffered enough video data to play!
+                onCanPlay={() => setIsMediaReady(true)}
+                className={`max-w-full max-h-full transition-opacity duration-500 ${isMediaReady ? 'opacity-100' : 'opacity-0'}`} 
               />
             ) : (
-              <Image src={currentMedia.src} alt="Media" fill className="object-contain" />
+              <Image 
+                src={currentMedia.src} 
+                alt="Media" 
+                fill 
+                className={`object-contain transition-opacity duration-500 ${isMediaReady ? 'opacity-100' : 'opacity-0'}`}
+                // Tells the modal the browser has completely downloaded the image!
+                onLoad={() => setIsMediaReady(true)}
+              />
             )}
           </motion.div>
         </AnimatePresence>
