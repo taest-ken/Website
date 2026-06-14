@@ -52,14 +52,14 @@ const collabsData: CollabData[] = [
     headline: "Taest Brand Book Inhouse",
     subhead: "Brand world building + Identity",
     featuredMedia: "/collabs_media/brand-book/1.mp4",
-    description: "A demonstration of the agency's brand-world designing capabilities, displayed through a detailed immersion into our own branding & identity process.",
+    description: "A demonstration of the agency's brand-world designing capability, displayed through a detailed immersion into our own branding & identity process.",
     folders: [{ path: "collabs_media/brand-book", sort: "ordered" }],
   },
   {
     headline: "Taest HumAIne Kitchen Inhouse",
     subhead: "AI Creative Direction",
     featuredMedia: "/collabs_media/creative-direction/thumb.png",
-    description: "A demonstration of the agency's AI creative direction capabilities displayed via our stunning social posts.",
+    description: "A demonstration of the agency's AI creative direction capability displayed via our stunning social posts.",
     folders: [{ path: "collabs_media/creative-direction/play", sort: "ordered" }],
   },
   {
