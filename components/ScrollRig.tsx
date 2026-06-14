@@ -96,7 +96,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
         <div className="relative z-10 flex items-center justify-center pointer-events-none w-[90%] md:w-[60%] lg:w-[45%]">
           <video
             ref={fgVideoRef}
-            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hello-taest-flicker.mp4`}
+            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hello-taest-no-bg.mp4`}
             autoPlay
             muted
             loop
