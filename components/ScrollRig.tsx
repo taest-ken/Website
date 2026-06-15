@@ -11,9 +11,9 @@ interface ScrollRigProps {
 export default function ScrollRig({ children }: ScrollRigProps) {
   const [isSiteReady, setIsSiteReady] = useState(false);
   
-  // Refs for our two independent video layers
-  const bgVideoRef = useRef<HTMLVideoElement>(null);
-  const fgVideoRef = useRef<HTMLVideoElement>(null);
+  // Refs for our two orientation-specific videos
+  const landscapeVideoRef = useRef<HTMLVideoElement>(null);
+  const portraitVideoRef = useRef<HTMLVideoElement>(null);
 
   // Lock document scrolling while the loader is active
   useEffect(() => {
@@ -22,15 +22,14 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     return () => { document.body.style.overflow = ''; };
   }, [isSiteReady]);
 
-  // Master Gatekeeper (Tracks both videos before revealing)
+  // Master Gatekeeper (Tracks the active video based on screen size)
   useEffect(() => {
     let isMounted = true;
-    let bgReady = false;
-    let fgReady = false;
+    let videoReady = false;
     const startTime = Date.now(); 
 
     const checkReady = () => {
-      if (bgReady && fgReady && isMounted) {
+      if (videoReady && isMounted) {
         const elapsed = Date.now() - startTime;
         const remaining = Math.max(0, 5000 - elapsed); // Enforce strict 5-second minimum
 
@@ -40,27 +39,20 @@ export default function ScrollRig({ children }: ScrollRigProps) {
       }
     };
 
-    // Track Background Video
-    const bgVid = bgVideoRef.current;
-    if (bgVid && bgVid.readyState < 3) {
-      bgVid.addEventListener('canplaythrough', () => {
-        bgReady = true; 
-        bgVid.play().catch(() => {}); 
+    // Determine which video is actively being displayed based on CSS breakpoints (md = 768px)
+    const isDesktop = window.innerWidth >= 768;
+    const activeVid = isDesktop ? landscapeVideoRef.current : portraitVideoRef.current;
+
+    if (activeVid && activeVid.readyState < 3) {
+      activeVid.addEventListener('canplaythrough', () => {
+        videoReady = true; 
+        activeVid.play().catch(() => {}); 
         checkReady();
       }, { once: true });
-    } else { bgReady = true; }
-
-    // Track Foreground (Hello Card) Video
-    const fgVid = fgVideoRef.current;
-    if (fgVid && fgVid.readyState < 3) {
-      fgVid.addEventListener('canplaythrough', () => {
-        fgReady = true; 
-        fgVid.play().catch(() => {}); 
-        checkReady();
-      }, { once: true });
-    } else { fgReady = true; }
-
-    checkReady(); // Initial check if assets are already cached
+    } else { 
+      videoReady = true; 
+      checkReady(); 
+    }
 
     // 6-second Safety Fallback
     const fallback = setTimeout(() => { 
@@ -76,35 +68,31 @@ export default function ScrollRig({ children }: ScrollRigProps) {
         {!isSiteReady && <Loader variant="hero" />}
       </AnimatePresence>
 
-      {/* --- RESPONSIVE DUAL-VIDEO HERO LAYOUT --- */}
+      {/* --- RESPONSIVE SINGLE-LAYER HERO LAYOUT --- */}
       <div className="relative w-full h-[100svh] overflow-hidden bg-black z-10 flex items-center justify-center">
         
-        {/* Layer 1: Background Video (Fills screen, crops sides on mobile) */}
+        {/* LANDSCAPE VIDEO (Hidden on Mobile) */}
         <video
-          ref={bgVideoRef}
-          // Note: Removed the space from the filename "website-landscape-bg .mp4" for safety. 
-          // Ensure your actual S3 filename exactly matches this string!
-          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-landscape-bg.mp4`}
+          ref={landscapeVideoRef}
+          // TODO: Replace with your actual 16:9 flattened video filename
+          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-landscape-static-optn.mp4`}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+          className="hidden md:block absolute inset-0 w-full h-full object-cover z-0"
         />
 
-        {/* Layer 2: Foreground Title Card Video (Maintains 16:9, responsive width constraints) */}
-        <div className="relative z-10 flex items-center justify-center pointer-events-none w-[90%] md:w-[60%] lg:w-[45%]">
-          <video
-            ref={fgVideoRef}
-            src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/hello-no-bg.webm`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            // object-contain guarantees it will never overflow the wrapper boundaries
-            className="w-full h-auto aspect-video object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]"
-          />
-        </div>
+        {/* PORTRAIT VIDEO (Hidden on Desktop) */}
+        <video
+          ref={portraitVideoRef}
+          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-portrait-static-option.mp4`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="block md:hidden absolute inset-0 w-full h-full object-cover z-0"
+        />
         
       </div>
 
