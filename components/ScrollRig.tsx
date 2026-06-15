@@ -22,44 +22,48 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     return () => { document.body.style.overflow = ''; };
   }, [isSiteReady]);
 
-  // Master Gatekeeper (Tracks the active video based on screen size)
+  // Master Gatekeeper (Strictly waits for active playback)
   useEffect(() => {
     let isMounted = true;
-    let videoReady = false;
-    const startTime = Date.now(); 
 
-    const checkReady = () => {
-      if (videoReady && isMounted) {
-        const elapsed = Date.now() - startTime;
-        const remaining = Math.max(0, 5000 - elapsed); // Enforce strict 5-second minimum
-
-        setTimeout(() => { 
-          if (isMounted) setIsSiteReady(true); 
-        }, remaining);
-      }
-    };
-
-    // Determine which video is actively being displayed based on CSS breakpoints (md = 768px)
+    // Determine which video is actively visible based on screen width
     const isDesktop = window.innerWidth >= 768;
     const activeVid = isDesktop ? landscapeVideoRef.current : portraitVideoRef.current;
 
-    if (activeVid && activeVid.readyState < 3) {
-      activeVid.addEventListener('canplaythrough', () => {
-        videoReady = true; 
-        activeVid.play().catch(() => {}); 
-        checkReady();
-      }, { once: true });
-    } else { 
-      videoReady = true; 
-      checkReady(); 
+    if (!activeVid) return;
+
+    // The absolute truth: This only fires when pixels are actively moving on screen
+    const handlePlaying = () => {
+      if (isMounted) setIsSiteReady(true);
+    };
+
+    // Once enough of the video is loaded, force it to start playing
+    const forcePlay = () => {
+      activeVid.play().catch((err) => console.error("Autoplay prevented:", err));
+    };
+
+    // 1. If the video is somehow already actively playing, drop loader instantly
+    if (!activeVid.paused && activeVid.currentTime > 0) {
+      handlePlaying();
+    } else {
+      // 2. Attach the listener that will finally dismiss the loader
+      activeVid.addEventListener('playing', handlePlaying, { once: true });
+      
+      // 3. Wait for the browser to cache enough data before pulling the trigger
+      if (activeVid.readyState >= 3) {
+        forcePlay();
+      } else {
+        activeVid.addEventListener('canplaythrough', forcePlay, { once: true });
+      }
     }
 
-    // 6-second Safety Fallback
-    const fallback = setTimeout(() => { 
-      if (isMounted) setIsSiteReady(true); 
-    }, 6000);
-
-    return () => { isMounted = false; clearTimeout(fallback); };
+    return () => {
+      isMounted = false;
+      if (activeVid) {
+        activeVid.removeEventListener('playing', handlePlaying);
+        activeVid.removeEventListener('canplaythrough', forcePlay);
+      }
+    };
   }, []);
 
   return (
@@ -74,12 +78,12 @@ export default function ScrollRig({ children }: ScrollRigProps) {
         {/* LANDSCAPE VIDEO (Hidden on Mobile) */}
         <video
           ref={landscapeVideoRef}
-          // TODO: Replace with your actual 16:9 flattened video filename
           src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-landscape-static-optn.mp4`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto" // Forces browser to download the full file
           className="hidden md:block absolute inset-0 w-full h-full object-cover z-0"
         />
 
@@ -91,6 +95,7 @@ export default function ScrollRig({ children }: ScrollRigProps) {
           muted
           loop
           playsInline
+          preload="auto" // Forces browser to download the full file
           className="block md:hidden absolute inset-0 w-full h-full object-cover z-0"
         />
         
