@@ -22,9 +22,10 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     return () => { document.body.style.overflow = ''; };
   }, [isSiteReady]);
 
-  // Master Gatekeeper (Strictly waits for active playback)
+  // Master Gatekeeper (Waits for playback AND a minimum of 5 seconds)
   useEffect(() => {
     let isMounted = true;
+    const startTime = Date.now(); // Record the exact millisecond the component mounts
 
     // Determine which video is actively visible based on screen width
     const isDesktop = window.innerWidth >= 768;
@@ -34,7 +35,16 @@ export default function ScrollRig({ children }: ScrollRigProps) {
 
     // The absolute truth: This only fires when pixels are actively moving on screen
     const handlePlaying = () => {
-      if (isMounted) setIsSiteReady(true);
+      if (!isMounted) return;
+      
+      // Calculate how long it took the video to load and start playing
+      const elapsed = Date.now() - startTime;
+      // If it took less than 5 seconds, wait for the remaining time to finish the animation
+      const remaining = Math.max(0, 5000 - elapsed); 
+
+      setTimeout(() => {
+        if (isMounted) setIsSiteReady(true);
+      }, remaining);
     };
 
     // Once enough of the video is loaded, force it to start playing
