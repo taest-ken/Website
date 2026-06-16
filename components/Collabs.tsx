@@ -177,9 +177,6 @@ export default function Collabs() {
               <p className="mb-6">
                 Join us and quench your craft cravings over craft brews. Flex your elite ball knowledge over ball games. Find your big idea, hidden beneath your idea of fun. That&apos;s not it. Get access to <span className="text-white font-medium">plug & play leadership, cultural intelligence reports, tastemaxxing sessions for your team, invites to social mixers, creative tech prototyping.</span>
               </p>
-              <p className="mb-6">
-                Cultural intelligence catch-ups, tastemaxxing sessions for your team, invites to social mixers, creative tech capabilities/prototyping and access to a community of top industry talent.
-              </p>
               <p className="text-neon-green font-medium">
                 Want to know more? Let&apos;s set up a call to explore synergies.
               </p>
