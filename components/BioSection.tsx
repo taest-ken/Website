@@ -31,13 +31,13 @@ export default function BioSection() {
 
         {/* 3. The Multilingual Accents */}
         <div className="flex justify-between w-full max-w-[240px] sm:max-w-[380px] md:max-w-[560px] text-2xl md:text-4xl font-bold mb-10 tracking-wider">
-          <span className="text-[#54EB17]">टेस्ट</span>   {/* Hindi - Neon Green */}
-          <span className="text-[#A855F7]">ٹیسٹ</span>    {/* Urdu - Purple */}
-          <span className="text-[#EC4899]">ടേസ്റ്റ്</span>   {/* Malayalam - Pink */}
+          <span className="text-[#54EB17]">टेस्ट</span>
+          <span className="text-[#A855F7]">ٹیسٹ</span>
+          <span className="text-[#EC4899]">ടേസ്റ്റ്</span>
         </div>
 
-        {/* 4. The Manifesto Text Inside Legible Translucent Bubble */}
-        <div className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 sm:p-8 md:p-10 rounded-2xl shadow-sm max-w-4xl mx-auto">
+        {/* 4. The Manifesto Text Inside Tight, High-Translucency Glass Bubble */}
+        <div className="bg-white/20 backdrop-blur-xl border border-white/40 p-4 sm:p-6 rounded-2xl shadow-sm max-w-4xl mx-auto">
           <p className="text-black text-sm sm:text-base md:text-lg leading-relaxed font-medium text-balance">
             A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world's most relevant people. We offer plug & play creative and strategic leadership. All while building a thriving social circle for you, your brand and your clients.
           </p>

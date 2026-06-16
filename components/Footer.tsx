@@ -18,7 +18,6 @@ export default function Footer() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    // Frontend validation safeguard
     if (!intro.trim() || !email.trim() || !phone.trim()) {
       setStatusMessage({ type: "error", text: "Please fill out all fields before sending." });
       setIsSubmitting(false);
@@ -68,8 +67,8 @@ export default function Footer() {
                 className="object-contain object-left"
               />
             </div>
-            {/* Bubble 1: Brand Description Card */}
-            <div className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 md:p-8 rounded-2xl shadow-sm w-full">
+            {/* Bubble 1: Tightened, High-Translucency Brand Card */}
+            <div className="bg-white/20 backdrop-blur-xl border border-white/40 p-4 md:p-5 rounded-2xl shadow-sm w-full">
               <p className="text-xl md:text-2xl font-medium leading-snug opacity-85">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
@@ -82,9 +81,9 @@ export default function Footer() {
               Meet over coffee?
             </h3>
             
-            {/* Bubble 2: Entire Form Interactive Block */}
+            {/* Bubble 2: Tightened Form Interactive Block with optimized gap spacing */}
             <form 
-              className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 sm:p-8 md:p-10 rounded-2xl shadow-sm flex flex-col gap-8 mb-16 w-full" 
+              className="bg-white/25 backdrop-blur-xl border border-white/40 p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm flex flex-col gap-6 mb-16 w-full" 
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col gap-2">
@@ -94,7 +93,7 @@ export default function Footer() {
                   value={intro}
                   onChange={(e) => setIntro(e.target.value)}
                   placeholder="Great work starts with great intros." 
-                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
@@ -106,7 +105,7 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Where can we reach your inbox?" 
-                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
@@ -118,12 +117,12 @@ export default function Footer() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="Best number for a quick call or WhatsApp message." 
-                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
 
-              <div className="flex items-center gap-6 mt-4">
+              <div className="flex items-center gap-6 mt-2">
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
