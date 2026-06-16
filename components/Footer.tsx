@@ -55,10 +55,10 @@ export default function Footer() {
       style={{ backgroundImage: "url('/images/bio-bg.jpg')" }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-12 items-start">
           
           {/* LEFT CORNER: Brand Identity */}
-          <div className="flex flex-col w-full max-w-lg">
+          <div className="flex flex-col w-fit max-w-md md:max-w-lg">
             <div className="relative w-72 md:w-96 lg:w-[450px] h-32 md:h-48 mb-6">
               <Image 
                 src="/images/taest-logo-outline.png" 
@@ -67,8 +67,8 @@ export default function Footer() {
                 className="object-contain object-left"
               />
             </div>
-            {/* Bubble 1: Tightened, High-Translucency Brand Card */}
-            <div className="bg-white/20 backdrop-blur-xl border border-white/40 p-4 md:p-5 rounded-2xl shadow-sm w-full">
+            {/* Bubble 1: Highly Translucent Left Info Block with Fixed Tight Padding */}
+            <div className="bg-white/[0.06] backdrop-blur-2xl border border-white/20 px-5 py-4 rounded-xl shadow-sm w-fit">
               <p className="text-xl md:text-2xl font-medium leading-snug opacity-85">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
@@ -76,14 +76,14 @@ export default function Footer() {
           </div>
 
           {/* RIGHT CORNER: The Form & Contact Info */}
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full max-w-xl">
             <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-10">
               Meet over coffee?
             </h3>
             
-            {/* Bubble 2: Tightened Form Interactive Block with optimized gap spacing */}
+            {/* Bubble 2: Minimal Opacity Right Form Block with Small Rigid Margin Envelopes */}
             <form 
-              className="bg-white/25 backdrop-blur-xl border border-white/40 p-5 sm:p-6 md:p-8 rounded-2xl shadow-sm flex flex-col gap-6 mb-16 w-full" 
+              className="bg-white/[0.06] backdrop-blur-2xl border border-white/20 px-5 py-5 rounded-xl shadow-sm flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col gap-2">

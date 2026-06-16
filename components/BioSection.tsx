@@ -36,8 +36,8 @@ export default function BioSection() {
           <span className="text-[#EC4899]">ടേസ്റ്റ്</span>
         </div>
 
-        {/* 4. The Manifesto Text Inside Tight, High-Translucency Glass Bubble */}
-        <div className="bg-white/20 backdrop-blur-xl border border-white/40 p-4 sm:p-6 rounded-2xl shadow-sm max-w-4xl mx-auto">
+        {/* 4. The Manifesto Text Inside Tight, Minimal-Opacity Glass Bubble */}
+        <div className="bg-white/[0.06] backdrop-blur-2xl border border-white/20 px-5 py-4 rounded-xl shadow-sm w-fit max-w-[90vw] sm:max-w-2xl md:max-w-3xl mx-auto">
           <p className="text-black text-sm sm:text-base md:text-lg leading-relaxed font-medium text-balance">
             A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world's most relevant people. We offer plug & play creative and strategic leadership. All while building a thriving social circle for you, your brand and your clients.
           </p>
