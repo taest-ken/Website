@@ -36,11 +36,12 @@ export default function BioSection() {
           <span className="text-[#EC4899]">ടേസ്റ്റ്</span>   {/* Malayalam - Pink */}
         </div>
 
-        {/* 4. The Manifesto Text */}
-        {/* Reduced max-w-3xl to max-w-xl, and decreased text sizes */}
-        <p className="text-black text-sm sm:text-base md:text-lg leading-relaxed max-w-5xl font-medium text-balance mx-auto">
-          A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world's most relevant people. We offer plug & play creative and strategic leadership. All while building a thriving social circle for you, your brand and your clients.
-        </p>
+        {/* 4. The Manifesto Text Inside Legible Translucent Bubble */}
+        <div className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 sm:p-8 md:p-10 rounded-2xl shadow-sm max-w-4xl mx-auto">
+          <p className="text-black text-sm sm:text-base md:text-lg leading-relaxed font-medium text-balance">
+            A global social establishment to empower brands, founders, agencies, and production houses. We are designed to operate like the inner circle of the world's most relevant people. We offer plug & play creative and strategic leadership. All while building a thriving social circle for you, your brand and your clients.
+          </p>
+        </div>
         
       </div>
     </section>

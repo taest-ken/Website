@@ -18,7 +18,7 @@ export default function Footer() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    // Frontend validation safeguard matching the updated backend requirements
+    // Frontend validation safeguard
     if (!intro.trim() || !email.trim() || !phone.trim()) {
       setStatusMessage({ type: "error", text: "Please fill out all fields before sending." });
       setIsSubmitting(false);
@@ -36,7 +36,6 @@ export default function Footer() {
 
       if (response.ok) {
         setStatusMessage({ type: "success", text: "Submission received. Let's talk soon." });
-        // Purge fields on system dispatch success
         setIntro("");
         setEmail("");
         setPhone("");
@@ -57,11 +56,11 @@ export default function Footer() {
       style={{ backgroundImage: "url('/images/bio-bg.jpg')" }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12 items-start">
           
           {/* LEFT CORNER: Brand Identity */}
-          <div className="flex flex-col">
-            <div className="relative w-72 md:w-96 lg:w-[450px] h-32 md:h-48 mb-10">
+          <div className="flex flex-col w-full max-w-lg">
+            <div className="relative w-72 md:w-96 lg:w-[450px] h-32 md:h-48 mb-6">
               <Image 
                 src="/images/taest-logo-outline.png" 
                 alt="taest. logo"
@@ -69,21 +68,25 @@ export default function Footer() {
                 className="object-contain object-left"
               />
             </div>
-            <div className="flex flex-col gap-6">
-              <p className="text-xl md:text-2xl font-medium max-w-lg leading-snug opacity-85">
+            {/* Bubble 1: Brand Description Card */}
+            <div className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 md:p-8 rounded-2xl shadow-sm w-full">
+              <p className="text-xl md:text-2xl font-medium leading-snug opacity-85">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
             </div>
           </div>
 
           {/* RIGHT CORNER: The Form & Contact Info */}
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-10">
               Meet over coffee?
             </h3>
             
-            <form className="flex flex-col gap-8 mb-16" onSubmit={handleSubmit}>
-              {/* SECTION 1: Intro */}
+            {/* Bubble 2: Entire Form Interactive Block */}
+            <form 
+              className="bg-white/65 backdrop-blur-md border border-neutral-200/40 p-6 sm:p-8 md:p-10 rounded-2xl shadow-sm flex flex-col gap-8 mb-16 w-full" 
+              onSubmit={handleSubmit}
+            >
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Intro</label>
                 <input 
@@ -96,7 +99,6 @@ export default function Footer() {
                 />
               </div>
 
-              {/* SECTION 2: Email ID */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Email ID</label>
                 <input 
@@ -109,7 +111,6 @@ export default function Footer() {
                 />
               </div>
 
-              {/* SECTION 3: Contact No. */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Contact No.</label>
                 <input 
@@ -136,7 +137,6 @@ export default function Footer() {
                   )}
                 </button>
 
-                {/* System Feedback Message Alert Layer */}
                 {statusMessage && (
                   <p className={`text-sm font-bold uppercase tracking-wider ${
                     statusMessage.type === "success" ? "text-neutral-800" : "text-red-600"
