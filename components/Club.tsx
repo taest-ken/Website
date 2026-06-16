@@ -24,7 +24,7 @@ interface ClubData {
 const clubItems: ClubData[] = [
   {
     id: "os-reports",
-    title: "2025 CLTRL OS reports",
+    title: "2025 CLTRL OS Reports",
     tagline: "Upgrade your cultural software.",
     size: "md:col-span-2 md:row-span-2",
     folders: [
@@ -45,21 +45,21 @@ const clubItems: ClubData[] = [
   },
   {
     id: "mixers",
-    title: "taest mixers",
+    title: "Taest Mixers",
     tagline: "Meet, network, ideate with new tastemakers.",
     size: "md:col-span-1 md:row-span-1",
     folders: [{ path: "club_media/mixers", sort: "ordered" }],
   },
   {
     id: "muscle-up",
-    title: "Muscle up",
+    title: "Muscle Up",
     tagline: "Flex your creative muscles.",
     size: "md:col-span-1 md:row-span-1",
     folders: [{ path: "club_media/muscle-up", sort: "ordered" }], // Update this path to match your S3 structure
   },
   {
     id: "trust",
-    title: "In taest we trust",
+    title: "In Taest We Trust",
     tagline: "Develop, expand, evolve your taste.",
     size: "md:col-span-1 md:row-span-1", // Shrunk to 1x1
     folders: [
@@ -79,7 +79,7 @@ const clubItems: ClubData[] = [
   },
   {
     id: "capabilities",
-    title: "What we do",
+    title: "What We Do",
     tagline: "Capabilities & Offerings.",
     size: "md:col-span-2 md:row-span-1",
     folders: [{ path: "club_media/what-we-do", sort: "random" }],
