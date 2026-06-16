@@ -6,8 +6,8 @@ import Image from "next/image";
 export default function Footer() {
   // Form input field state management
   const [intro, setIntro] = useState("");
-  const [contact, setContact] = useState("");
-  const [brief, setBrief] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   // System request state controllers
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,8 +18,8 @@ export default function Footer() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    // Basic frontend verification safeguard
-    if (!intro.trim() || !contact.trim() || !brief.trim()) {
+    // Frontend validation safeguard matching the updated backend requirements
+    if (!intro.trim() || !email.trim() || !phone.trim()) {
       setStatusMessage({ type: "error", text: "Please fill out all fields before sending." });
       setIsSubmitting(false);
       return;
@@ -29,7 +29,7 @@ export default function Footer() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ intro, contact, brief }),
+        body: JSON.stringify({ intro, email, phone }),
       });
 
       const result = await response.json();
@@ -38,8 +38,8 @@ export default function Footer() {
         setStatusMessage({ type: "success", text: "Submission received. Let's talk soon." });
         // Purge fields on system dispatch success
         setIntro("");
-        setContact("");
-        setBrief("");
+        setEmail("");
+        setPhone("");
       } else {
         setStatusMessage({ type: "error", text: result.error || "Something went wrong." });
       }
@@ -83,6 +83,7 @@ export default function Footer() {
             </h3>
             
             <form className="flex flex-col gap-8 mb-16" onSubmit={handleSubmit}>
+              {/* SECTION 1: Intro */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Intro</label>
                 <input 
@@ -95,25 +96,27 @@ export default function Footer() {
                 />
               </div>
 
+              {/* SECTION 2: Email ID */}
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-black uppercase tracking-widest">Email ID / Mobile</label>
+                <label className="text-sm font-black uppercase tracking-widest">Email ID</label>
                 <input 
-                  type="text" 
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  placeholder="Help us find you where you're the most accessible and available." 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Where can we reach your inbox?" 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
 
+              {/* SECTION 3: Contact No. */}
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-black uppercase tracking-widest">Brief</label>
+                <label className="text-sm font-black uppercase tracking-widest">Contact No.</label>
                 <input 
-                  type="text" 
-                  value={brief}
-                  onChange={(e) => setBrief(e.target.value)}
-                  placeholder="How can we be of service?" 
+                  type="tel" 
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Best number for a quick call or WhatsApp message." 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
