@@ -175,7 +175,7 @@ export default function Collabs() {
             {/* Added max-w-2xl and stepped down font sizes to text-lg md:text-xl */}
             <div className="w-full md:w-2/3 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
               <p className="mb-6">
-                Get access to <span className="text-white font-medium">plug & play creative, brand and strategic leadership</span> to bolster your in-house team. 
+                Join us and quench your craft cravings over craft brews. Flex your elite ball knowledge over ball games. Find your big idea, hidden beneath your idea of fun. That&apos;s not it. Get access to <span className="text-white font-medium">plug & play leadership, cultural intelligence reports, tastemaxxing sessions for your team, invites to social mixers, creative tech prototyping.</span>
               </p>
               <p className="mb-6">
                 Cultural intelligence catch-ups, tastemaxxing sessions for your team, invites to social mixers, creative tech capabilities/prototyping and access to a community of top industry talent.

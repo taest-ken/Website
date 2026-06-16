@@ -187,11 +187,11 @@ export default function Club() {
           {/* Reduced max-w-3xl to max-w-2xl */}
           <div className="max-w-2xl">
             <p className="text-xl md:text-2xl font-bold text-white mb-4">
-              The social club era of brand building is here.
+              <span className="text-white font-medium">The social club era of brand building is here.</span>
             </p>
             {/* Stepped down font sizes to text-lg md:text-xl */}
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              An era where brands climb the top of the social ladder of influence, relevance and superstardom. All on the back of their exquisite, unmatched taste.
+              Hang out with culture shapers. Make plans with tastemakers. All while building yourself, your brand, or your clients, a thriving space and an infectious taste.
             </p>
           </div>
         </div>
