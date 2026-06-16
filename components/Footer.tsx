@@ -1,13 +1,59 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Footer() {
+  // Form input field state management
+  const [intro, setIntro] = useState("");
+  const [contact, setContact] = useState("");
+  const [brief, setBrief] = useState("");
+
+  // System request state controllers
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage(null);
+
+    // Basic frontend verification safeguard
+    if (!intro.trim() || !contact.trim() || !brief.trim()) {
+      setStatusMessage({ type: "error", text: "Please fill out all fields before sending." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ intro, contact, brief }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setStatusMessage({ type: "success", text: "Submission received. Let's talk soon." });
+        // Purge fields on system dispatch success
+        setIntro("");
+        setContact("");
+        setBrief("");
+      } else {
+        setStatusMessage({ type: "error", text: result.error || "Something went wrong." });
+      }
+    } catch (err) {
+      setStatusMessage({ type: "error", text: "Network failure. Please try again later." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer 
       id="contact" 
       className="text-black bg-cover bg-center bg-no-repeat"
-      // Note: Adjust this path to "/bio-bg.jpg" if the file is directly in the root of your public folder!
       style={{ backgroundImage: "url('/images/bio-bg.jpg')" }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-32">
@@ -24,7 +70,6 @@ export default function Footer() {
               />
             </div>
             <div className="flex flex-col gap-6">
-              {/* Changed leading-relaxed to leading-snug to tighten line spacing */}
               <p className="text-xl md:text-2xl font-medium max-w-lg leading-snug opacity-85">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
@@ -37,13 +82,16 @@ export default function Footer() {
               Meet over coffee?
             </h3>
             
-            <form className="flex flex-col gap-8 mb-16" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col gap-8 mb-16" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Intro</label>
                 <input 
                   type="text" 
+                  value={intro}
+                  onChange={(e) => setIntro(e.target.value)}
                   placeholder="Great work starts with great intros." 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -51,8 +99,11 @@ export default function Footer() {
                 <label className="text-sm font-black uppercase tracking-widest">Email ID / Mobile</label>
                 <input 
                   type="text" 
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
                   placeholder="Help us find you where you're the most accessible and available." 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -60,21 +111,37 @@ export default function Footer() {
                 <label className="text-sm font-black uppercase tracking-widest">Brief</label>
                 <input 
                   type="text" 
+                  value={brief}
+                  onChange={(e) => setBrief(e.target.value)}
                   placeholder="How can we be of service?" 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-3 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
+                  disabled={isSubmitting}
                 />
               </div>
 
-              <button 
-                type="submit" 
-                // CHANGED: Defaulted text color to neon green, added scale transform and smooth ease-out transitions for the pop effect
-                className="bg-[#1A1A1A] text-[#54EB17] px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] transform hover:scale-105 transition-all duration-300 ease-out w-fit mt-4 flex items-center gap-3 rounded-lg shadow-md active:scale-98"
-              >
-                LET&apos;S TALK 
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
-                </svg>
-              </button>
+              <div className="flex items-center gap-6 mt-4">
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="bg-[#1A1A1A] text-[#54EB17] px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] transform hover:scale-105 transition-all duration-300 ease-out w-fit flex items-center gap-3 rounded-lg shadow-md active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "SENDING..." : "LET'S TALK"}
+                  {!isSubmitting && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
+                    </svg>
+                  )}
+                </button>
+
+                {/* System Feedback Message Alert Layer */}
+                {statusMessage && (
+                  <p className={`text-sm font-bold uppercase tracking-wider ${
+                    statusMessage.type === "success" ? "text-neutral-800" : "text-red-600"
+                  }`}>
+                    {statusMessage.text}
+                  </p>
+                )}
+              </div>
             </form>
 
             <div className="pt-8 border-t border-black/20 grid grid-cols-1 sm:grid-cols-2 gap-8">

@@ -22,10 +22,10 @@ export default function ScrollRig({ children }: ScrollRigProps) {
     return () => { document.body.style.overflow = ''; };
   }, [isSiteReady]);
 
-  // Master Gatekeeper (Waits for playback AND a minimum of 5 seconds)
+  // Master Gatekeeper (Waits for asset data with an autoplay deadlock safeguard)
   useEffect(() => {
     let isMounted = true;
-    const startTime = Date.now(); // Record the exact millisecond the component mounts
+    const startTime = Date.now(); 
 
     // Determine which video is actively visible based on screen width
     const isDesktop = window.innerWidth >= 768;
@@ -33,48 +33,51 @@ export default function ScrollRig({ children }: ScrollRigProps) {
 
     if (!activeVid) return;
 
-    // The absolute truth: This only fires when pixels are actively moving on screen
-    const handlePlaying = () => {
+    const handleVideoReady = () => {
       if (!isMounted) return;
       
-      // Calculate how long it took the video to load and start playing
+      // Calculate how long it took the video file to initialize
       const elapsed = Date.now() - startTime;
-      // If it took less than 5 seconds, wait for the remaining time to finish the animation
+      // Enforce the 5-second minimum timer so the animation finishes elegantly
       const remaining = Math.max(0, 5000 - elapsed); 
 
       setTimeout(() => {
-        if (isMounted) setIsSiteReady(true);
+        if (isMounted) {
+          // Attempt to kick off loop playback cleanly
+          activeVid.play().catch((err) => {
+            console.warn("Autoplay engaged post-hydration framework safety:", err);
+          });
+          setIsSiteReady(true);
+        }
       }, remaining);
     };
 
-    // Once enough of the video is loaded, force it to start playing
-    const forcePlay = () => {
-      activeVid.play().catch((err) => console.error("Autoplay prevented:", err));
-    };
-
-    // 1. If the video is somehow already actively playing, drop loader instantly
-    if (!activeVid.paused && activeVid.currentTime > 0) {
-      handlePlaying();
+    // Trigger completion when the browser has loaded the current frame data
+    if (activeVid.readyState >= 2) {
+      handleVideoReady();
     } else {
-      // 2. Attach the listener that will finally dismiss the loader
-      activeVid.addEventListener('playing', handlePlaying, { once: true });
-      
-      // 3. Wait for the browser to cache enough data before pulling the trigger
-      if (activeVid.readyState >= 3) {
-        forcePlay();
-      } else {
-        activeVid.addEventListener('canplaythrough', forcePlay, { once: true });
-      }
+      activeVid.addEventListener('loadeddata', handleVideoReady, { once: true });
+      activeVid.addEventListener('canplay', handleVideoReady, { once: true });
     }
+
+    // MAX SAFETY TIMEOUT: Forces the loader away after 10s if the network is congested
+    const maxSafetyFallback = setTimeout(() => {
+      if (isMounted && !isSiteReady) {
+        console.log("Network congestion or autoplay restriction detected. Triggering safety override.");
+        activeVid.play().catch(() => {});
+        setIsSiteReady(true);
+      }
+    }, 10000);
 
     return () => {
       isMounted = false;
+      clearTimeout(maxSafetyFallback);
       if (activeVid) {
-        activeVid.removeEventListener('playing', handlePlaying);
-        activeVid.removeEventListener('canplaythrough', forcePlay);
+        activeVid.removeEventListener('loadeddata', handleVideoReady);
+        activeVid.removeEventListener('canplay', handleVideoReady);
       }
     };
-  }, []);
+  }, [isSiteReady]);
 
   return (
     <>
