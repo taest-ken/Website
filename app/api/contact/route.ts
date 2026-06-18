@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const { intro, email, phone } = await request.json();
 
     // Enforce completeness across the newly defined parameters
-    if (!intro || !email || !phone) {
+    if (!intro || (!email && !phone)) {
       return NextResponse.json(
         { error: 'Intro, Email ID, and Contact No. are all required.' },
         { status: 400 }
