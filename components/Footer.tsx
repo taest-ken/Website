@@ -18,8 +18,15 @@ export default function Footer() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    if (!intro.trim() || !email.trim() || !phone.trim()) {
-      setStatusMessage({ type: "error", text: "Please fill out all fields before sending." });
+    // RELAXED VALIDATION: Intro is mandatory, plus AT LEAST ONE contact method
+    if (!intro.trim()) {
+      setStatusMessage({ type: "error", text: "Please provide an introduction." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!email.trim() && !phone.trim()) {
+      setStatusMessage({ type: "error", text: "Please provide either an Email ID or a Contact No." });
       setIsSubmitting(false);
       return;
     }
@@ -67,8 +74,8 @@ export default function Footer() {
                 className="object-contain object-left"
               />
             </div>
-            {/* Bubble 1: Highly Translucent Left Info Block with Fixed Tight Padding */}
-            <div className="bg-white/[0.06] backdrop-blur-2xl border border-white/20 px-5 py-4 rounded-xl shadow-sm w-fit">
+            {/* Bubble 1: Flat, Minimal Opacity Container without Blur and with Fixed Bounds */}
+            <div className="bg-neutral-900/[0.04] border border-black/[0.07] px-5 py-4 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] w-fit">
               <p className="text-xl md:text-2xl font-medium leading-snug opacity-85">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
@@ -81,13 +88,13 @@ export default function Footer() {
               Meet over coffee?
             </h3>
             
-            {/* Bubble 2: Minimal Opacity Right Form Block with Small Rigid Margin Envelopes */}
+            {/* Bubble 2: Flat, Low-Opacity Container with Rigid, Non-Shifting Dimension Blocks */}
             <form 
-              className="bg-white/[0.06] backdrop-blur-2xl border border-white/20 px-5 py-5 rounded-xl shadow-sm flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
+              className="bg-neutral-900/[0.04] border border-black/[0.07] px-5 py-5 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-black uppercase tracking-widest">Intro</label>
+                <label className="text-sm font-black uppercase tracking-widest">Intro *</label>
                 <input 
                   type="text" 
                   value={intro}
