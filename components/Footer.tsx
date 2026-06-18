@@ -90,7 +90,7 @@ export default function Footer() {
             
             {/* Bubble 2: Flat, Low-Opacity Container with Rigid, Non-Shifting Dimension Blocks */}
             <form 
-              className="bg-neutral-900/[0.04] border border-black/[0.07] px-5 py-5 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
+              className="bg-neutral-900/[0.30] border border-black/[0.20] px-5 py-5 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
               onSubmit={handleSubmit}
             >
               <div className="flex flex-col gap-2">
