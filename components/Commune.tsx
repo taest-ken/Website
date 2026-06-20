@@ -137,7 +137,7 @@ const team = [
 
 export default function Commune() {
   return (
-    <section id="crew" className="px-6 lg:px-8 py-32 bg-black border-t border-dark-grey">
+    <section id="crew" className="snap-start px-6 lg:px-8 py-32 bg-black border-t border-dark-grey">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className="mb-12 md:mb-16">

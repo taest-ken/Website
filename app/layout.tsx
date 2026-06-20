@@ -30,12 +30,9 @@ export const metadata: Metadata = {
   generator: 'v0.app'
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // Cleaned up CSS scroll hijacking properties to allow JS physics engine to run flawlessly
     <html lang="en" className="bg-black">
       <body className={`${dmSans.variable} ${lostInSouth.variable} font-sans antialiased`}>
         {children}

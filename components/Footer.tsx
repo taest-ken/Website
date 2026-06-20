@@ -3,13 +3,28 @@
 import { useState } from "react";
 import Image from "next/image";
 
+// Reusable Nail Component Generator with 50px scale and tighter edge proximity
+const IndustrialNails = () => (
+  <>
+    <div className="absolute top-2 left-2 w-[50px] h-[50px] opacity-85 z-20 drop-shadow-[2px_3px_2px_rgba(0,0,0,0.4)]">
+      <Image src="/images/nail.png" alt="Industrial Nail" fill className="object-contain -rotate-12" />
+    </div>
+    <div className="absolute top-2 right-2 w-[50px] h-[50px] opacity-85 z-20 drop-shadow-[2px_3px_2px_rgba(0,0,0,0.4)]">
+      <Image src="/images/nail.png" alt="Industrial Nail" fill className="object-contain rotate-[65deg]" />
+    </div>
+    <div className="absolute bottom-2 left-2 w-[50px] h-[50px] opacity-85 z-20 drop-shadow-[2px_3px_2px_rgba(0,0,0,0.4)]">
+      <Image src="/images/nail.png" alt="Industrial Nail" fill className="object-contain rotate-[110deg]" />
+    </div>
+    <div className="absolute bottom-2 right-2 w-[50px] h-[50px] opacity-85 z-20 drop-shadow-[2px_3px_2px_rgba(0,0,0,0.4)]">
+      <Image src="/images/nail.png" alt="Industrial Nail" fill className="object-contain -rotate-[25deg]" />
+    </div>
+  </>
+);
+
 export default function Footer() {
-  // Form input field state management
   const [intro, setIntro] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-
-  // System request state controllers
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -18,13 +33,11 @@ export default function Footer() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    // RELAXED VALIDATION: Intro is mandatory, plus AT LEAST ONE contact method
     if (!intro.trim()) {
       setStatusMessage({ type: "error", text: "Please provide an introduction." });
       setIsSubmitting(false);
       return;
     }
-
     if (!email.trim() && !phone.trim()) {
       setStatusMessage({ type: "error", text: "Please provide either an Email ID or a Contact No." });
       setIsSubmitting(false);
@@ -37,14 +50,11 @@ export default function Footer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ intro, email, phone }),
       });
-
       const result = await response.json();
 
       if (response.ok) {
         setStatusMessage({ type: "success", text: "Submission received. Let's talk soon." });
-        setIntro("");
-        setEmail("");
-        setPhone("");
+        setIntro(""); setEmail(""); setPhone("");
       } else {
         setStatusMessage({ type: "error", text: result.error || "Something went wrong." });
       }
@@ -74,9 +84,11 @@ export default function Footer() {
                 className="object-contain object-left"
               />
             </div>
-            {/* Bubble 1: Flat, Minimal Opacity Container without Blur and with Fixed Bounds */}
-            <div className="bg-neutral-900/[0.04] border border-black/[0.07] px-5 py-4 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] w-fit">
-              <p className="text-xl md:text-2xl font-medium leading-snug opacity-85">
+
+            {/* Bubble 1: Ultra-light Blur, High Transparency */}
+            <div className="relative bg-neutral-900/[0.05] backdrop-blur-[2px] border border-t-white/20 border-r-white/20 border-b-black/30 border-l-black/30 p-10 md:p-14 rounded-2xl shadow-[-12px_12px_24px_rgba(0,0,0,0.08),inset_1px_1px_2px_rgba(255,255,255,0.15)] w-fit">
+              <IndustrialNails />
+              <p className="relative z-10 text-xl md:text-2xl font-medium leading-snug opacity-85 mt-4">
                 Your inner circle of global tastemakers who upgrade your Cltrl OS. Make work play. Build your brand a thriving space. Help you earn <b>tomorrow&apos;s currency today.</b>
               </p>
             </div>
@@ -88,12 +100,14 @@ export default function Footer() {
               Meet over coffee?
             </h3>
             
-            {/* Bubble 2: Flat, Low-Opacity Container with Rigid, Non-Shifting Dimension Blocks */}
+            {/* Bubble 2: Ultra-light Blur, High Transparency */}
             <form 
-              className="bg-neutral-900/[0.30] border border-black/[0.20] px-5 py-5 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.01)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
+              className="relative bg-neutral-900/[0.08] backdrop-blur-[2px] border border-t-white/20 border-r-white/20 border-b-black/30 border-l-black/30 p-10 md:p-14 rounded-2xl shadow-[-12px_12px_24px_rgba(0,0,0,0.08),inset_1px_1px_2px_rgba(255,255,255,0.15)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col gap-2">
+              <IndustrialNails />
+              
+              <div className="relative z-10 flex flex-col gap-2 mt-4">
                 <label className="text-sm font-black uppercase tracking-widest">Intro *</label>
                 <input 
                   type="text" 
@@ -105,7 +119,7 @@ export default function Footer() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="relative z-10 flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Email ID</label>
                 <input 
                   type="email" 
@@ -117,7 +131,7 @@ export default function Footer() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="relative z-10 flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Contact No.</label>
                 <input 
                   type="tel" 
@@ -129,7 +143,7 @@ export default function Footer() {
                 />
               </div>
 
-              <div className="flex items-center gap-6 mt-2">
+              <div className="relative z-10 flex items-center gap-6 mt-2">
                 <button 
                   type="submit" 
                   disabled={isSubmitting}

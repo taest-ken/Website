@@ -172,7 +172,7 @@ export default function Club() {
   const [selectedItem, setSelectedItem] = useState<{ item: ClubData; media: Media[] } | null>(null);
 
   return (
-    <section id="club" className="px-6 lg:px-8 py-24 bg-black">
+    <section id="club" className="snap-start px-6 lg:px-8 py-24 bg-black">
       <div className="max-w-7xl mx-auto">
         
         {/* Module Header & Pitch */}

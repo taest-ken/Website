@@ -158,7 +158,7 @@ export default function Collabs() {
   const [selectedCollab, setSelectedCollab] = useState<{ collab: CollabData; media: Media[] } | null>(null);
 
   return (
-    <section id="collabs" className="px-6 lg:px-8 py-20 bg-black">
+    <section id="collabs" className="snap-start px-6 lg:px-8 py-20 bg-black">
       <div className="max-w-7xl mx-auto">
         
         {/* Module Header & Pitch */}

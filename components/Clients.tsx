@@ -63,7 +63,7 @@ export default function Clients() {
   return (
     <section 
       id="clients" 
-      className="py-24 bg-black overflow-hidden border-y border-dark-grey cursor-default"
+      className="snap-start py-24 bg-black overflow-hidden border-y border-dark-grey cursor-default"
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

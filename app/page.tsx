@@ -1,31 +1,29 @@
 "use client";
+
 import Header from "@/components/Header";
-import BioSection from "@/components/BioSection";
+import LandingToBioTrack from "@/components/LandingToBioTrack";
 import Collabs from "@/components/Collabs";
 import Club from "@/components/Club";
 import Clients from "@/components/Clients";
 import Commune from "@/components/Commune";
 import Footer from "@/components/Footer";
-import ScrollRigClient from '@/components/ScrollRigClient';
 
 export default function Home() {
   return (
     <>
       <Header />
-      <ScrollRigClient>
-        {/* Navigation Order: Bio -> Collabs -> Club -> Clients -> Commune -> Contact */}
-        <section className="pt-20">
-          <BioSection />
-        </section>
+      
+      {/* 1. Combined Scoped Animation Track (Landing Background Video -> Concrete Bio Section Layout) */}
+      <LandingToBioTrack />
 
+      {/* 2. Standard Document Content Flow (Scrolls upward normally past the Bio block tracking coordinates) */}
+      <main className="bg-black relative z-20">
         <Collabs />
         <Club />
         <Clients />
         <Commune />
-        
-        {/* Footer acts as the general Contact section */}
         <Footer />
-      </ScrollRigClient>
+      </main>
     </>
   );
 }
