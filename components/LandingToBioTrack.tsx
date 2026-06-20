@@ -1,12 +1,61 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { animate, motion, useScroll, useTransform } from "framer-motion";
+import { animate, motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import Loader from "./Loader";
 
 export default function LandingToBioTrack() {
   const scrollTrackRef = useRef<HTMLDivElement>(null);
 
+  // ────────────────────────────────────────────────────────────────────────────
+  // LOADER & ASSET STATE MACHINE
+  // ────────────────────────────────────────────────────────────────────────────
+  const [isSiteReady, setIsSiteReady] = useState(false);
+  
+  // Track individual asset readiness
+  const videoLoaded = useRef(false);
+  const frontLoaded = useRef(false);
+  const backLoaded = useRef(false);
+
+  useEffect(() => {
+    // Lock document scrolling while loading
+    if (!isSiteReady) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isSiteReady]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const startTime = Date.now();
+    const MIN_LOAD_TIME = 5000; // Force at least 5 seconds
+    const MAX_LOAD_TIME = 8000; // Force close after 8 seconds (roughly 1 full loader video loop)
+
+    const checkReadyState = setInterval(() => {
+      if (!isMounted) return;
+      const elapsed = Date.now() - startTime;
+      
+      const allAssetsReady = videoLoaded.current && frontLoaded.current && backLoaded.current;
+
+      // 1. If 5 seconds have passed AND assets are ready -> OPEN
+      // 2. If 8 seconds have passed (max limit reached) -> FORCE OPEN
+      if (elapsed >= MIN_LOAD_TIME) {
+        if (allAssetsReady || elapsed >= MAX_LOAD_TIME) {
+          setIsSiteReady(true);
+          clearInterval(checkReadyState);
+        }
+      }
+    }, 250);
+
+    return () => {
+      isMounted = false;
+      clearInterval(checkReadyState);
+    };
+  }, []);
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // 3D SCROLL & GLIDE ENGINE
+  // ────────────────────────────────────────────────────────────────────────────
   const { scrollYProgress } = useScroll({
     target: scrollTrackRef,
     offset: ["start start", "end end"],
@@ -19,10 +68,10 @@ export default function LandingToBioTrack() {
   const cardWidth = "w-[85vw] sm:w-[460px] md:w-[540px]";
   const thicknessLayers = Array.from({ length: 16 }, (_, i) => i - 8);
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // CUSTOM CINEMATIC GLIDE ENGINE
-  // ────────────────────────────────────────────────────────────────────────────
   useEffect(() => {
+    // Prevent scroll hijacking if the site is still loading
+    if (!isSiteReady) return; 
+
     const track = scrollTrackRef.current;
     if (!track) return;
 
@@ -66,9 +115,7 @@ export default function LandingToBioTrack() {
       }
     };
 
-    const onWheel = (e: WheelEvent) => {
-      handleScrollIntention(e.deltaY, e);
-    };
+    const onWheel = (e: WheelEvent) => handleScrollIntention(e.deltaY, e);
 
     const onTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
@@ -77,9 +124,7 @@ export default function LandingToBioTrack() {
 
     const onTouchMove = (e: TouchEvent) => {
       const deltaY = touchStartY - e.touches[0].clientY;
-      if (Math.abs(deltaY) > 10) {
-        handleScrollIntention(deltaY, e);
-      }
+      if (Math.abs(deltaY) > 10) handleScrollIntention(deltaY, e);
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
@@ -92,11 +137,18 @@ export default function LandingToBioTrack() {
       window.removeEventListener("touchmove", onTouchMove);
       if (scrollAnimation) scrollAnimation.stop();
     };
-  }, []);
+  }, [isSiteReady]);
 
   return (
     <div ref={scrollTrackRef} className="relative h-[200vh] w-full bg-black">
       
+      {/* ───────────────────────────────────────────────────────────────────────
+          GLOBAL HERO LOADER
+          ─────────────────────────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {!isSiteReady && <Loader variant="hero" />}
+      </AnimatePresence>
+
       {/* ───────────────────────────────────────────────────────────────────────
           3D GRAPHICS ANIMATION MOTOR
           ─────────────────────────────────────────────────────────────────────── */}
@@ -133,7 +185,16 @@ export default function LandingToBioTrack() {
               style={{ backfaceVisibility: "hidden", transform: "translateZ(8.5px)", WebkitBackfaceVisibility: "hidden" }}
               className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-white"
             >
-              <Image src="/images/hello-static-logo.png" alt="Identity Card Front Badge" fill className="object-cover" priority />
+              {/* Added unoptimized to bypass server-side processing errors */}
+              <Image 
+                src="/images/hello-static-logo.png" 
+                alt="Identity Card Front Badge" 
+                fill 
+                className="object-cover" 
+                priority 
+                unoptimized
+                onLoad={() => { frontLoaded.current = true; }} 
+              />
             </div>
 
             {/* BACK FACE LAYER */}
@@ -141,7 +202,16 @@ export default function LandingToBioTrack() {
               style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg) translateZ(8.5px)", WebkitBackfaceVisibility: "hidden" }}
               className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#e2e8f0]"
             >
-              <Image src="/images/badge-back-bg.png" alt="Card Backing Graphic Profile" fill className="object-cover z-0" priority />
+              {/* Added unoptimized to bypass server-side processing errors */}
+              <Image 
+                src="/images/badge-back-bg.png" 
+                alt="Card Backing Graphic Profile" 
+                fill 
+                className="object-cover z-0" 
+                priority 
+                unoptimized
+                onLoad={() => { backLoaded.current = true; }}
+              />
               <div className="absolute top-[28%] bottom-[5%] left-[5%] right-[5%] z-10 flex items-center justify-center px-2 sm:px-4 text-center select-text">
                 <p className="text-black text-[11px] sm:text-xs md:text-sm lg:text-[15px] leading-snug sm:leading-relaxed font-bold text-balance tracking-tight">
                   A global social establishment to empower brands, founders, agencies, and production houses. 
@@ -163,35 +233,31 @@ export default function LandingToBioTrack() {
           autoPlay muted loop playsInline preload="auto"
           src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-landscape-bg.mp4`}
           className="hidden md:block absolute inset-0 w-full h-full object-cover opacity-90"
+          onLoadedData={() => { videoLoaded.current = true; }}
         />
         <video
           autoPlay muted loop playsInline preload="auto"
           src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-portrait-static-option.mp4`}
           className="block md:hidden absolute inset-0 w-full h-full object-cover opacity-90"
+          onLoadedData={() => { videoLoaded.current = true; }}
         />
       </div>
 
       {/* ───────────────────────────────────────────────────────────────────────
-          STAGE 2: MANIFESTO CONCRETE LAYER (Refactored Layout)
+          STAGE 2: MANIFESTO CONCRETE LAYER 
           ─────────────────────────────────────────────────────────────────────── */}
       <div className="relative h-screen w-full overflow-hidden flex items-center justify-center z-10 bg-white">
-        <Image src="/images/bio-bg.jpg" alt="Concrete Plaster Textured Backdrop" fill className="object-cover object-center z-0 opacity-95" quality={100} />
+        {/* Added unoptimized */}
+        <Image src="/images/bio-bg.jpg" alt="Concrete Plaster Textured Backdrop" fill className="object-cover object-center z-0 opacity-95" quality={100} unoptimized />
 
-        {/* 1. Increased vertical gap (`gap-20 md:gap-32`) to push the logos further down from the card.
-        */}
         <div className="relative z-10 w-full max-w-7xl mx-auto text-center flex flex-col items-center justify-center gap-20 md:gap-32 h-full py-12 md:py-16">
-          
           <div className={`${cardWidth} aspect-[1280/794] invisible pointer-events-none`} />
 
-          {/* 2. Scaled text up (`text-2xl sm:text-3xl md:text-5xl`)
-            3. Widened container (`max-w-[300px]` to `lg:max-w-[850px]`) to spread the logos apart
-          */}
           <div className="flex justify-between w-full max-w-[300px] sm:max-w-[480px] md:max-w-[700px] lg:max-w-[850px] text-2xl sm:text-3xl md:text-5xl font-black tracking-widest select-none">
             <span className="text-black drop-shadow-sm">टेस्ट</span>
             <span className="text-black drop-shadow-sm">ٹیسٹ</span>
             <span className="text-black drop-shadow-sm">ടേസ്റ്റ്</span>
           </div>
-
         </div>
       </div>
     </div>
