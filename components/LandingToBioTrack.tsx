@@ -214,10 +214,7 @@ export default function LandingToBioTrack() {
               />
               <div className="absolute top-[28%] bottom-[5%] left-[5%] right-[5%] z-10 flex items-center justify-center px-2 sm:px-4 text-center select-text">
                 <p className="text-black text-[11px] sm:text-xs md:text-sm lg:text-[15px] leading-snug sm:leading-relaxed font-bold text-balance tracking-tight">
-                  A global social establishment to empower brands, founders, agencies, and production houses. 
-                  We are designed to operate like the inner circle of the world&apos;s most relevant people. 
-                  We offer plug & play creative and strategic leadership. All while building a thriving 
-                  social circle for you, your brand and your clients.
+                  Taest is a global social establishment for future brand builders. With us, clients get a life outside work and their work magically finds new life! This is the dawn of the social club era of brand building. Designed for people who can&pos;t help but talk shop in their downtime. With us, they clock it in as their day's prime time.
                 </p>
               </div>
             </div>
@@ -237,7 +234,7 @@ export default function LandingToBioTrack() {
         />
         <video
           autoPlay muted loop playsInline preload="auto"
-          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-portrait-static-option.mp4`}
+          src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/videos/website-mobile-bg.mp4`}
           className="block md:hidden absolute inset-0 w-full h-full object-cover opacity-90"
           onLoadedData={() => { videoLoaded.current = true; }}
         />
