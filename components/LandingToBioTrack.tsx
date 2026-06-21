@@ -214,7 +214,7 @@ export default function LandingToBioTrack() {
               />
               <div className="absolute top-[28%] bottom-[5%] left-[5%] right-[5%] z-10 flex items-center justify-center px-2 sm:px-4 text-center select-text">
                 <p className="text-black text-[11px] sm:text-xs md:text-sm lg:text-[15px] leading-snug sm:leading-relaxed font-bold text-balance tracking-tight">
-                  Taest is a global social establishment for future brand builders. With us, clients get a life outside work and their work magically finds new life! This is the dawn of the social club era of brand building. Designed for people who can&pos;t help but talk shop in their downtime. With us, they clock it in as their day's prime time.
+                  Taest is a global social establishment for future brand builders. With us, clients get a life outside work and their work magically finds new life! This is the dawn of the social club era of brand building. Designed for people who can't help but talk shop in their downtime. With us, they clock it in as their day's prime time.
                 </p>
               </div>
             </div>
