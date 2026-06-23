@@ -202,7 +202,6 @@ export default function LandingToBioTrack() {
               style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg) translateZ(8.5px)", WebkitBackfaceVisibility: "hidden" }}
               className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-[#e2e8f0]"
             >
-              {/* Added unoptimized to bypass server-side processing errors */}
               <Image 
                 src="/images/badge-back-bg.png" 
                 alt="Card Backing Graphic Profile" 
@@ -212,10 +211,14 @@ export default function LandingToBioTrack() {
                 unoptimized
                 onLoad={() => { backLoaded.current = true; }}
               />
-              <div className="absolute top-[28%] bottom-[5%] left-[5%] right-[5%] z-10 flex items-center justify-center px-2 sm:px-4 text-center select-text">
-                <p className="text-black text-[11px] sm:text-xs md:text-sm lg:text-[15px] leading-snug sm:leading-relaxed font-bold text-balance tracking-tight">
-                  Taest is a global social establishment for future brand builders. With us, clients get a life outside work and their work magically finds new life! This is the dawn of the social club era of brand building. Designed for people who can't help but talk shop in their downtime. With us, they clock it in as their day's prime time.
-                </p>
+              
+              {/* Responsive Text Bounds with Bulleted List Layout */}
+              <div className="absolute top-[28%] bottom-[5%] left-[6%] right-[6%] z-10 flex items-center justify-center px-2 sm:px-6 select-text">
+                <ul className="text-black text-left text-[11px] sm:text-[13px] md:text-[15px] lg:text-[17px] leading-tight sm:leading-snug md:leading-relaxed font-bold tracking-tight list-disc pl-4 space-y-2 sm:space-y-3 md:space-y-4">
+                  <li>Global social establishment to empower creatives, founders, brands and agencies</li>
+                  <li>Finer your taste, higher it pays. Maximise your earnings. Future proof your brand-building!</li>
+                  <li>Creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents, AI studio.</li>
+                </ul>
               </div>
             </div>
           </motion.div>
@@ -244,17 +247,50 @@ export default function LandingToBioTrack() {
           STAGE 2: MANIFESTO CONCRETE LAYER 
           ─────────────────────────────────────────────────────────────────────── */}
       <div className="relative h-screen w-full overflow-hidden flex items-center justify-center z-10 bg-white">
-        {/* Added unoptimized */}
-        <Image src="/images/bio-bg.jpg" alt="Concrete Plaster Textured Backdrop" fill className="object-cover object-center z-0 opacity-95" quality={100} unoptimized />
+        <Image 
+          src="/images/bio-bg.jpg" 
+          alt="Concrete Plaster Textured Backdrop" 
+          fill 
+          className="object-cover object-center z-0 opacity-95" 
+          quality={100} 
+          unoptimized 
+        />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto text-center flex flex-col items-center justify-center gap-20 md:gap-32 h-full py-12 md:py-16">
-          <div className={`${cardWidth} aspect-[1280/794] invisible pointer-events-none`} />
-
-          <div className="flex justify-between w-full max-w-[300px] sm:max-w-[480px] md:max-w-[700px] lg:max-w-[850px] text-2xl sm:text-3xl md:text-5xl font-black tracking-widest select-none">
-            <span className="text-black drop-shadow-sm">टेस्ट</span>
-            <span className="text-black drop-shadow-sm">ٹیسٹ</span>
-            <span className="text-black drop-shadow-sm">ടേസ്റ്റ്</span>
+        {/* 
+            SYMMETRICAL FLEX EQUALIZER:
+            - By applying identical padding to the top and bottom blocks (`pt-[110px]` & `pb-[110px]`),
+              the `flex-1` containers absorb the exact same amount of space.
+            - This absolutely guarantees the invisible card footprint stays perfectly centered
+              to match the 3D flipping card, while providing a permanent safe-zone to dodge the header.
+        */}
+        <div className="relative z-10 w-full h-full max-w-7xl mx-auto flex flex-col items-center justify-center px-4">
+          
+          {/* 1. TOP SAFE ZONE: Absorbs 50% free space. pt-[90px] md:pt-[110px] securely dodges the header. */}
+          <div className="flex-1 w-full flex items-center justify-center pt-[90px] md:pt-[140px]">
+            <div className="relative w-full max-w-[140px] sm:max-w-[200px] md:max-w-[280px] lg:max-w-[320px] h-12 sm:h-16 md:h-20 shrink-0">
+              <Image 
+                src="/images/taest-logo-black.png" 
+                alt="taest logo black design"
+                fill
+                className="object-contain object-center"
+                priority
+              />
+            </div>
           </div>
+
+          {/* 2. CENTER FOOTPRINT: Strictly matches the 3D card scale. my-4 provides minimum anti-overlap padding. */}
+          <div className={`${cardWidth} aspect-[1280/794] invisible pointer-events-none shrink-0 my-4 sm:my-8`} />
+
+          {/* 3. BOTTOM SAFE ZONE: Mirrors the top padding to mathematically preserve the center lock. */}
+          <div className="flex-1 w-full flex items-center justify-center pb-[90px] md:pb-[110px]">
+            {/* Dynamic horizontal spacing controlled by scaling the max-w across breakpoints */}
+            <div className="flex justify-between w-full max-w-[260px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-widest select-none">
+              <span className="text-black drop-shadow-sm">टेस्ट</span>
+              <span className="text-black drop-shadow-sm">ٹیسٹ</span>
+              <span className="text-black drop-shadow-sm">ടേസ്റ്റ്</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
