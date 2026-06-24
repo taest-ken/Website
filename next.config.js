@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     // 1. Clear the image quality warning by allowing pristine 100% prints
     qualities: [75, 100],
-    
+    unoptimized: true,
     // 2. Whitelist your AWS S3 bucket so Next.js is allowed to optimize your portfolio assets
     remotePatterns: [
       {

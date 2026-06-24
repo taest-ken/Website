@@ -220,9 +220,9 @@ export default function LandingToBioTrack() {
               */}
               <div className="absolute top-[26%] bottom-[8%] left-[5%] right-[5%] z-10 flex items-center justify-center px-4 sm:px-8 select-text">
                 <ul className="text-black text-left text-[11px] sm:text-[13px] md:text-[15px] lg:text-[17px] leading-tight sm:leading-snug md:leading-relaxed font-bold tracking-tight list-disc pl-5 space-y-2 sm:space-y-3 md:space-y-4">
-                  <li>Global social establishment to empower creatives, founders, brands and agencies</li>
-                  <li>Finer your taste, higher it pays. Maximise your earnings. Future proof your brand-building!</li>
-                  <li>Creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents, AI studio.</li>
+                  <li>We are a global social establishment to empower creatives, founders, brands and agencies</li>
+                  <li>We let you maximise your earnings. Future proof your brand-building! As finer your taste, higher it pays.</li>
+                  <li>We help with creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents & AI studio.</li>
                 </ul>
               </div>
             </div>
