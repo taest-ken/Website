@@ -213,13 +213,20 @@ export default function LandingToBioTrack() {
               />
               
               {/* 
-                  Refined Bounding Box: 
-                  - top-[26%] perfectly clears the red HELLO header.
-                  - bottom-[8%] perfectly clears the bottom red lip.
-                  - px-4 sm:px-8 keeps the text safely away from the rounded grey corners.
+                  STRICT GREY-BOX BOUNDS:
+                  - top-[26%] and bottom-[6%] map perfectly to the grey area on the image.
+                  - left-[4%] and right-[4%] keep it inside the red side borders.
+                  - internal tracking padding scaled down on mobile (p-2 sm:p-6 lg:p-8) to maximize text box space.
               */}
-              <div className="absolute top-[26%] bottom-[8%] left-[5%] right-[5%] z-10 flex items-center justify-center px-4 sm:px-8 select-text">
-                <ul className="text-black text-left text-[11px] sm:text-[13px] md:text-[15px] lg:text-[17px] leading-tight sm:leading-snug md:leading-relaxed font-bold tracking-tight list-disc pl-5 space-y-2 sm:space-y-3 md:space-y-4">
+              <div className="absolute top-[26%] bottom-[6%] left-[4%] right-[4%] z-10 flex items-center justify-center p-2 sm:p-6 lg:p-8 select-text">
+                
+                {/* 
+                    MOBILE CONTAINER SCALING: 
+                    - text-[9px] on mobile allows all three list elements to sit cleanly inside the narrow collapsed box aspect ratio.
+                    - space-y-1 keeps lines dense on mobile viewports but spreads nicely into space-y-4 on desktops.
+                    - pl-3 keeps bullets tight against the left edge on small mobile viewports.
+                */}
+                <ul className="w-full text-black text-left text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight list-disc pl-3 sm:pl-6 space-y-1 sm:space-y-2 md:space-y-3 lg:space-y-4">
                   <li>We are a global social establishment to empower creatives, founders, brands and agencies</li>
                   <li>We let you maximise your earnings. Future proof your brand-building! As finer your taste, higher it pays.</li>
                   <li>We help with creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents & AI studio.</li>
