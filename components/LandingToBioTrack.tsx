@@ -216,21 +216,20 @@ export default function LandingToBioTrack() {
                   STRICT GREY-BOX BOUNDS:
                   - top-[26%] and bottom-[6%] map perfectly to the grey area on the image.
                   - left-[4%] and right-[4%] keep it inside the red side borders.
-                  - internal tracking padding scaled down on mobile (p-2 sm:p-6 lg:p-8) to maximize text box space.
               */}
               <div className="absolute top-[26%] bottom-[6%] left-[4%] right-[4%] z-10 flex items-center justify-center p-2 sm:p-6 lg:p-8 select-text">
                 
                 {/* 
-                    MOBILE CONTAINER SCALING: 
-                    - text-[9px] on mobile allows all three list elements to sit cleanly inside the narrow collapsed box aspect ratio.
-                    - space-y-1 keeps lines dense on mobile viewports but spreads nicely into space-y-4 on desktops.
-                    - pl-3 keeps bullets tight against the left edge on small mobile viewports.
+                    CENTER ALIGNED STACKED PARAGRAPHS: 
+                    - text-center aligns the text to the middle.
+                    - Removed list-disc and pl-* padding.
+                    - space-y-* cleanly separates the 3 lines like breaks, scaling across mobile to desktop.
                 */}
-                <ul className="w-full text-black text-left text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight list-disc pl-3 sm:pl-6 space-y-1 sm:space-y-2 md:space-y-3 lg:space-y-4">
-                  <li>We are a global social establishment to empower creatives, founders, brands and agencies</li>
-                  <li>We let you maximise your earnings. Future proof your brand-building! As finer your taste, higher it pays.</li>
-                  <li>We help with creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents & AI studio.</li>
-                </ul>
+                <div className="w-full text-black text-center text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight space-y-2 sm:space-y-3 md:space-y-4 px-2">
+                  <p>We are a global social establishment to empower creatives, founders, brands and agencies</p>
+                  <p>We let you maximise your earnings. Future proof your brand-building! As finer your taste, higher it pays.</p>
+                  <p>We help with creative strategy, creative direction, Cltrl intel, creative prototyping, AI agents & AI studio.</p>
+                </div>
               </div>
             </div>
           </motion.div>
