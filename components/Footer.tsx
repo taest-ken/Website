@@ -75,7 +75,7 @@ export default function Footer() {
 
       // 2. Trigger the modal
       cal("modal", {
-        calLink: "taest/discovery", // Ensure this matches your actual Cal.com event slug
+        calLink: "taest/15min", // Ensure this matches your actual Cal.com event slug
         config: {
           email: email.trim(),
           notes: intro.trim(),
