@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { getCalApi } from "@calcom/embed-react";
 
 // Reusable Nail Component Generator with 50px scale and tighter edge proximity
 const IndustrialNails = () => (
@@ -28,40 +29,70 @@ export default function Footer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
+  // 1. Pre-load the Cal.com engine in the background for zero latency
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", { 
+        theme: "dark", 
+        styles: { branding: { brandColor: "#54EB17" } }, 
+        hideEventTypeDetails: false,
+        layout: "month_view" 
+      });
+    })();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setStatusMessage(null);
 
     if (!intro.trim()) {
       setStatusMessage({ type: "error", text: "Please provide an introduction." });
-      setIsSubmitting(false);
       return;
     }
     if (!email.trim() && !phone.trim()) {
       setStatusMessage({ type: "error", text: "Please provide either an Email ID or a Contact No." });
-      setIsSubmitting(false);
       return;
     }
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ intro, email, phone }),
-      });
-      const result = await response.json();
+    setIsSubmitting(true);
+    setStatusMessage({ type: "success", text: "Opening calendar..." });
 
-      if (response.ok) {
-        setStatusMessage({ type: "success", text: "Submission received. Let's talk soon." });
-        setIntro(""); setEmail(""); setPhone("");
-      } else {
-        setStatusMessage({ type: "error", text: result.error || "Something went wrong." });
-      }
+    try {
+      const cal = await getCalApi();
+      
+      // 1. Set up a listener for a successful booking
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => {
+          // Clear the form and show success message when they finish booking
+          setIntro(""); 
+          setEmail(""); 
+          setPhone("");
+          setStatusMessage({ type: "success", text: "Booking confirmed! Check your inbox." });
+        }
+      });
+
+      // 2. Trigger the modal
+      cal("modal", {
+        calLink: "taest/discovery", // Ensure this matches your actual Cal.com event slug
+        config: {
+          email: email.trim(),
+          notes: intro.trim(),
+          "metadata[phone]": phone.trim(), 
+        }
+      });
+      
     } catch (err) {
-      setStatusMessage({ type: "error", text: "Network failure. Please try again later." });
+      setStatusMessage({ type: "error", text: "Failed to open calendar. Please try again later." });
     } finally {
-      setIsSubmitting(false);
+      // 3. Reset the button state shortly after the modal takes over the screen
+      // so it isn't stuck on "Loading..." when they close it.
+      setTimeout(() => {
+        setIsSubmitting(false);
+        // Only clear the status message if it currently says "Opening calendar..."
+        setStatusMessage((prev) => prev?.text === "Opening calendar..." ? null : prev);
+      }, 2000);
     }
   };
 
@@ -85,7 +116,6 @@ export default function Footer() {
               />
             </div>
 
-            {/* Bubble 1: Ultra-light Blur, High Transparency */}
             <div className="relative bg-neutral-900/[0.05] backdrop-blur-[2px] border border-t-white/20 border-r-white/20 border-b-black/30 border-l-black/30 p-10 md:p-14 rounded-2xl shadow-[-12px_12px_24px_rgba(0,0,0,0.08),inset_1px_1px_2px_rgba(255,255,255,0.15)] w-fit">
               <IndustrialNails />
               <p className="relative z-10 text-xl md:text-2xl font-medium leading-snug opacity-85 mt-4">
@@ -100,7 +130,6 @@ export default function Footer() {
               Meet over coffee?
             </h3>
             
-            {/* Bubble 2: Ultra-light Blur, High Transparency */}
             <form 
               className="relative bg-neutral-900/[0.08] backdrop-blur-[2px] border border-t-white/20 border-r-white/20 border-b-black/30 border-l-black/30 p-10 md:p-14 rounded-2xl shadow-[-12px_12px_24px_rgba(0,0,0,0.08),inset_1px_1px_2px_rgba(255,255,255,0.15)] flex flex-col gap-6 mb-16 w-full sm:w-[480px] md:w-[520px]" 
               onSubmit={handleSubmit}
@@ -149,7 +178,7 @@ export default function Footer() {
                   disabled={isSubmitting}
                   className="bg-[#1A1A1A] text-[#54EB17] px-8 py-4 text-sm font-bold uppercase tracking-[0.15em] transform hover:scale-105 transition-all duration-300 ease-out w-fit flex items-center gap-3 rounded-lg shadow-md active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "SENDING..." : "LET'S TALK"}
+                  {isSubmitting ? "LOADING..." : "BOOK A SESSION"}
                   {!isSubmitting && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
