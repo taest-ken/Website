@@ -40,12 +40,12 @@ const collabsData: CollabData[] = [
     description: "An outdoor first campaign to familiarise Bharat with Google's new AI mode by placing the product at the heart of the country's dreams and desires.",
     folders: [
       { path: "collabs_media/google-ai/1", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/strat1", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/creatives", sort: "ordered" },
-      { path: "collabs_media/google-ai/2/strat2", sort: "ordered" },
       { path: "collabs_media/google-ai/3/strat1", sort: "ordered" },
       { path: "collabs_media/google-ai/3/creatives", sort: "ordered" },
       { path: "collabs_media/google-ai/3/strat2", sort: "ordered" },
+      { path: "collabs_media/google-ai/2/strat1", sort: "ordered" },
+      { path: "collabs_media/google-ai/2/creatives", sort: "ordered" },
+      { path: "collabs_media/google-ai/2/strat2", sort: "ordered" },
     ],
   },
   {
