@@ -228,7 +228,7 @@ export default function LandingToBioTrack() {
                 <div className="w-full text-black text-center text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight space-y-2 sm:space-y-3 md:space-y-4 px-2">
                   <p>We are a global social establishment for the creative ecosystem. We are pioneers of the social-club era of brand building, where community, culture, curation and connection build brands that endure.</p>
                   <p>Our model: discover, network, collaborate, find community.</p>
-                  <p>Our practice spans creative strategy, creative direction, design, cultural intelligence, tech prototyping, AI agents and AI studios.</p>
+                  <p>Our practice spans creative strategy, creative direction, design, cultural intelligence, tech prototyping, AI agents and AI studio.</p>
                 </div>
               </div>
             </div>
