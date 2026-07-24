@@ -11,7 +11,10 @@ const clients = [
   { name: "Procter & Gamble", src: "/clients_media/pg.png", scale: "scale-125" },
   { name: "Trailer Park Group", src: "/clients_media/trailer-park-group.png", scale: "scale-170" },
   { name: "Sparkt LLP", src: "/clients_media/sparkt.png", scale: "scale-180" },
-  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png", scale: "scale-200" }
+  { name: "White Turtle Studios", src: "/clients_media/white-turtle.png", scale: "scale-200" },
+  { name: "MA&TH", src: "/clients_media/ma+th.png", scale: "scale-170" },
+  { name: "Trigger Happy", src: "/clients_media/trigger-happy.png", scale: "scale-360" },
+  { name: "Marching Ants", src: "/clients_media/marching-ants.png", scale: "scale-260" }
 ];
 
 export default function Clients() {
