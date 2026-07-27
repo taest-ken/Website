@@ -23,9 +23,9 @@ const IndustrialNails = () => (
 );
 
 export default function Footer() {
-  const [intro, setIntro] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -46,12 +46,9 @@ export default function Footer() {
     e.preventDefault();
     setStatusMessage(null);
 
-    if (!intro.trim()) {
-      setStatusMessage({ type: "error", text: "Please provide an introduction." });
-      return;
-    }
-    if (!email.trim() && !phone.trim()) {
-      setStatusMessage({ type: "error", text: "Please provide either an Email ID or a Contact No." });
+    // Enforce that at least one primary contact channel is provided
+    if (!phone.trim() && !email.trim()) {
+      setStatusMessage({ type: "error", text: "Please provide either a Mobile No. or an Email ID." });
       return;
     }
 
@@ -65,32 +62,28 @@ export default function Footer() {
       cal("on", {
         action: "bookingSuccessful",
         callback: () => {
-          // Clear the form and show success message when they finish booking
-          setIntro(""); 
+          setPhone(""); 
           setEmail(""); 
-          setPhone("");
+          setLinkedin("");
           setStatusMessage({ type: "success", text: "Booking confirmed! Check your inbox." });
         }
       });
 
-      // 2. Trigger the modal
+      // 2. Trigger the modal with structured contact metadata
       cal("modal", {
         calLink: "taest/15min", // Ensure this matches your actual Cal.com event slug
         config: {
           email: email.trim(),
-          notes: intro.trim(),
           "metadata[phone]": phone.trim(), 
+          "metadata[linkedin]": linkedin.trim(),
         }
       });
       
     } catch (err) {
       setStatusMessage({ type: "error", text: "Failed to open calendar. Please try again later." });
     } finally {
-      // 3. Reset the button state shortly after the modal takes over the screen
-      // so it isn't stuck on "Loading..." when they close it.
       setTimeout(() => {
         setIsSubmitting(false);
-        // Only clear the status message if it currently says "Opening calendar..."
         setStatusMessage((prev) => prev?.text === "Opening calendar..." ? null : prev);
       }, 2000);
     }
@@ -136,37 +129,40 @@ export default function Footer() {
             >
               <IndustrialNails />
               
+              {/* 1. MOBILE NO. */}
               <div className="relative z-10 flex flex-col gap-2 mt-4">
-                <label className="text-sm font-black uppercase tracking-widest">Intro *</label>
+                <label className="text-sm font-black uppercase tracking-widest">Mobile No.</label>
                 <input 
-                  type="text" 
-                  value={intro}
-                  onChange={(e) => setIntro(e.target.value)}
-                  placeholder="Great work starts with great intros." 
+                  type="tel" 
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Where to hop on a quick call?" 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
 
+              {/* 2. EMAIL ID */}
               <div className="relative z-10 flex flex-col gap-2">
                 <label className="text-sm font-black uppercase tracking-widest">Email ID</label>
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Where can we reach your inbox?" 
+                  placeholder="Where can we reach you?" 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
               </div>
 
+              {/* 3. LINKEDIN PROFILE*/}
               <div className="relative z-10 flex flex-col gap-2">
-                <label className="text-sm font-black uppercase tracking-widest">Contact No.</label>
+                <label className="text-sm font-black uppercase tracking-widest">LinkedIn Profile</label>
                 <input 
-                  type="tel" 
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Best number for a quick call or WhatsApp message." 
+                  type="url" 
+                  value={linkedin}
+                  onChange={(e) => setLinkedin(e.target.value)}
+                  placeholder="Lets connect!" 
                   className="bg-transparent border-b border-black/30 placeholder-black/50 py-2 text-lg focus:outline-none focus:border-black transition-colors w-full font-medium"
                   disabled={isSubmitting}
                 />
