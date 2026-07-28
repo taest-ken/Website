@@ -28,22 +28,16 @@ export default function LandingToBioTrack() {
   useEffect(() => {
     let isMounted = true;
     const startTime = Date.now();
-    const MIN_LOAD_TIME = 5000; // Force at least 5 seconds
-    const MAX_LOAD_TIME = 8000; // Force close after 8 seconds (roughly 1 full loader video loop)
+    // Safety fallback: Force close after 14 seconds in case video playback fails or hangs
+    const MAX_LOAD_TIME = 14000; 
 
     const checkReadyState = setInterval(() => {
       if (!isMounted) return;
       const elapsed = Date.now() - startTime;
-      
-      const allAssetsReady = videoLoaded.current && frontLoaded.current && backLoaded.current;
 
-      // 1. If 5 seconds have passed AND assets are ready -> OPEN
-      // 2. If 8 seconds have passed (max limit reached) -> FORCE OPEN
-      if (elapsed >= MIN_LOAD_TIME) {
-        if (allAssetsReady || elapsed >= MAX_LOAD_TIME) {
-          setIsSiteReady(true);
-          clearInterval(checkReadyState);
-        }
+      if (elapsed >= MAX_LOAD_TIME) {
+        setIsSiteReady(true);
+        clearInterval(checkReadyState);
       }
     }, 250);
 
@@ -146,7 +140,9 @@ export default function LandingToBioTrack() {
           GLOBAL HERO LOADER
           ─────────────────────────────────────────────────────────────────────── */}
       <AnimatePresence>
-        {!isSiteReady && <Loader variant="hero" />}
+        {!isSiteReady && (
+          <Loader variant="hero" onFinish={() => setIsSiteReady(true)} />
+        )}
       </AnimatePresence>
 
       {/* ───────────────────────────────────────────────────────────────────────
@@ -226,7 +222,7 @@ export default function LandingToBioTrack() {
                     - space-y-* cleanly separates the 3 lines like breaks, scaling across mobile to desktop.
                 */}
                 <div className="w-full text-black text-center text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight space-y-2 sm:space-y-3 md:space-y-4 px-2">
-                  <p>We are a global social establishment for the creative ecosystem. We are pioneers of the social-club era of brand building, where community, culture, curation and connection build brands that endure.</p>
+                  <p>We are a global social establishment for the creative ecosystem. We are pioneers of the social-club era of brand building, where <b>community, culture, curation and connection</b> build brands that endure.</p>
                   <p>Our model: discover, network, collaborate, find community.</p>
                   <p>Our practice spans creative strategy, creative direction, design, cultural intelligence, tech prototyping, AI agents and AI studio.</p>
                 </div>

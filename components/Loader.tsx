@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 interface LoaderProps {
   variant?: "hero" | "modal";
+  onFinish?: () => void;
 }
 
 // Internal micro-component for smooth trailing dots
@@ -21,20 +22,33 @@ const AnimatedDots = () => {
   return <span>{dots}</span>;
 };
 
-export default function Loader({ variant = "hero" }: LoaderProps) {
+export default function Loader({ variant = "hero", onFinish }: LoaderProps) {
   const isHero = variant === "hero";
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Force hardware autoplay on mount to prevent browser hydration freezes
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
-      videoRef.current.play().catch((err) => {
-        console.warn("Loader video autoplay blocked:", err);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isHero) {
+      // 1. HERO BEHAVIOR: Play once, unmuted, for ~12 seconds
+      video.loop = false;
+      video.muted = false;
+      video.defaultMuted = false;
+      
+      video.play().catch((err) => {
+        console.warn("Unmuted autoplay blocked by browser policy. Falling back to muted play:", err);
+        video.muted = true;
+        video.play().catch(() => {});
       });
+    } else {
+      // 2. MODAL BEHAVIOR: Looping, strictly muted
+      video.loop = true;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.play().catch(() => {});
     }
-  }, []);
+  }, [isHero]);
 
   return (
     <motion.div
@@ -54,12 +68,12 @@ export default function Loader({ variant = "hero" }: LoaderProps) {
       >
         <video
           ref={videoRef}
-          src="/assets/loader.mp4"
-          autoPlay
-          muted
-          loop
+          src={isHero ? "/assets/land-loader.mp4" : "/assets/loader.mp4"}
           playsInline
           preload="auto"
+          onEnded={() => {
+            if (isHero && onFinish) onFinish();
+          }}
           className="w-full h-full object-cover scale-[1.15]"
         />
       </div>
@@ -69,7 +83,7 @@ export default function Loader({ variant = "hero" }: LoaderProps) {
         <p className={`font-sans font-bold tracking-[0.25em] text-[#54EB17] uppercase ${
           isHero ? "text-sm md:text-base" : "text-xs md:text-sm"
         }`}>
-          L o a d i n g
+          Loading
         </p>
         
         {/* Absolute positioning lets dots animate without shifting the center balance */}
