@@ -97,12 +97,14 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
               <motion.div
                 initial={{ opacity: 0, scale: 1 }}
                 animate={{ opacity: [0, 0.6, 0], scale: [1, 1.5] }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
                 className="absolute inset-0 rounded-full border border-[#54EB17]/40 pointer-events-none"
               />
               <motion.div
                 initial={{ opacity: 0, scale: 1 }}
                 animate={{ opacity: [0, 0.6, 0], scale: [1, 1.8] }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.6 }}
                 className="absolute inset-0 rounded-full border border-[#54EB17]/20 pointer-events-none"
               />
@@ -115,9 +117,9 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
           {shockwave && (
             <motion.div
               initial={{ opacity: 0.8, scale: 1 }}
-              animate={{ opacity: 0, scale: 2.4 }}
+              animate={{ opacity: 0, scale: 10 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 5, ease: "easeOut" }}
               onAnimationComplete={() => setShockwave(false)}
               className="absolute inset-0 rounded-full border-2 border-[#54EB17] pointer-events-none"
             />
@@ -129,7 +131,7 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
           animate={
             isHero
               ? isUnlocked
-                ? { scale: [1, 1.65] } // Hyper-drive slow zoom over 12 seconds
+                ? { scale: [1, 1.75] } // Hyper-drive slow zoom over 12 seconds
                 : {}
               : {}
           }
@@ -168,40 +170,43 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
               <motion.p
                 key="tap-prompt"
                 initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: [0.7, 1, 0.7], y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                transition={{ 
-                  opacity: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
-                  y: { duration: 0.4, ease: "easeOut" },
-                  scale: { duration: 0.3 }
+                animate={{ 
+                  opacity: [0.7, 1, 0.7], 
+                  y: 0,
+                  transition: {
+                    opacity: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
+                    y: { duration: 0.4, ease: "easeOut" }
+                  }
+                }}
+                exit={{ 
+                  opacity: 0, 
+                  scale: 0.9, 
+                  y: -10,
+                  transition: { duration: 0.25, ease: "easeOut" } 
                 }}
                 className="font-sans font-bold tracking-[0.25em] text-[#54EB17] uppercase text-xs md:text-sm bg-[#54EB17]/10 px-6 py-3 rounded-full border border-[#54EB17]/30 shadow-[0_0_15px_rgba(84,235,23,0.1)] hover:bg-[#54EB17]/20 transition-colors"
               >
                 [ Tap to pull the lever ]
               </motion.p>
             ) : null
-          ) : (
-            /* Stage 3: Active Loading / Playing Status */
+          ) : !isHero ? (
+            /* Stage 3: Active Loading / Playing Status (Strictly for Modal variant only) */
             <motion.div
               key="loading-status"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="relative inline-flex items-center justify-center"
             >
-              <p className={`font-sans font-bold tracking-[0.25em] text-[#54EB17] uppercase ${
-                isHero ? "text-sm md:text-base" : "text-xs md:text-sm"
-              }`}>
+              <p className="font-sans font-bold tracking-[0.25em] text-[#54EB17] uppercase text-xs md:text-sm">
                 {progress !== undefined && progress > 0 ? `Loading ${progress}%` : "Loading"}
               </p>
               
-              <span className={`absolute left-full ml-1 font-sans font-bold tracking-[0.1em] text-[#54EB17] text-left w-6 ${
-                isHero ? "text-sm md:text-base" : "text-xs md:text-sm"
-              }`}>
+              <span className="absolute left-full ml-1 font-sans font-bold tracking-[0.1em] text-[#54EB17] text-left w-6 text-xs md:text-sm">
                 <AnimatedDots />
               </span>
             </motion.div>
-          )}
+          ) : null}
         </AnimatePresence>
       </div>
     </motion.div>
