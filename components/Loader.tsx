@@ -117,9 +117,9 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
           {shockwave && (
             <motion.div
               initial={{ opacity: 0.8, scale: 1 }}
-              animate={{ opacity: 0, scale: 10 }}
+              animate={{ opacity: 0, scale: 1.5 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 5, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               onAnimationComplete={() => setShockwave(false)}
               className="absolute inset-0 rounded-full border-2 border-[#54EB17] pointer-events-none"
             />
