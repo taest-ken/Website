@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Loader from "./Loader";
+import { useMediaBlob } from "@/hooks/useMediaBlob";
 
 export type MediaType = "image" | "video";
 export interface Media {
@@ -134,6 +135,18 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
   if (!media || media.length === 0) return null;
   const currentMedia = media[activeIdx];
 
+  // ────────────────────────────────────────────────────────────────────────────
+  // BLOB FETCH ENGINE INTEGRATION
+  // ────────────────────────────────────────────────────────────────────────────
+  const { blobUrl, progress: fetchProgress, isFetching } = useMediaBlob(currentMedia.src, currentMedia.type);
+
+  // When activeIdx changes or blob starts fetching, keep media unready until blobUrl is compiled
+  useEffect(() => {
+    if (isFetching) {
+      setIsMediaReady(false);
+    }
+  }, [isFetching, activeIdx]);
+
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100);
@@ -216,29 +229,36 @@ export default function MediaModal({ media, onClose }: { media: Media[]; onClose
             exit={{ opacity: 0 }} 
             className="relative w-full h-full flex items-center justify-center"
           >
-            {/* MODULE 2: MICRO-LOADER (Surfaces automatically on network buffer stalls) */}
+            {/* MODULE 2: MICRO-LOADER WITH LIVE PERCENTAGE TRACKING */}
             <AnimatePresence>
-              {!isMediaReady && <Loader variant="modal" />}
+              {(!isMediaReady || isFetching) && (
+                <Loader 
+                  variant="modal" 
+                  progress={isFetching ? fetchProgress : undefined} 
+                />
+              )}
             </AnimatePresence>
 
             {currentMedia.type === "video" ? (
-              <video 
-                ref={videoRef} 
-                src={currentMedia.src} 
-                autoPlay 
-                playsInline
-                muted={isMuted} 
-                onTimeUpdate={handleTimeUpdate} 
-                onEnded={handleNext} 
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                // MODULE 2: Event-Driven Buffer Synchronization
-                onCanPlay={() => setIsMediaReady(true)}
-                onPlaying={() => setIsMediaReady(true)}
-                onWaiting={() => setIsMediaReady(false)}
-                onStalled={() => setIsMediaReady(false)}
-                className={`max-w-full max-h-full transition-opacity duration-500 ${isMediaReady ? 'opacity-100' : 'opacity-0'}`} 
-              />
+              blobUrl ? (
+                <video 
+                  ref={videoRef} 
+                  src={blobUrl} 
+                  autoPlay 
+                  playsInline
+                  muted={isMuted} 
+                  onTimeUpdate={handleTimeUpdate} 
+                  onEnded={handleNext} 
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  // FIXED: Added onLoadedData and removed onWaiting / onStalled!
+                  // Once a file is in RAM as a Blob, ephemeral CPU decoding pauses will no longer trigger the spinner.
+                  onLoadedData={() => setIsMediaReady(true)}
+                  onCanPlay={() => setIsMediaReady(true)}
+                  onPlaying={() => setIsMediaReady(true)}
+                  className={`max-w-full max-h-full transition-opacity duration-500 ${isMediaReady && !isFetching ? 'opacity-100' : 'opacity-0'}`} 
+                />
+              ) : null
             ) : (
               <Image 
                 src={currentMedia.src} 
