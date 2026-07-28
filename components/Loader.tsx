@@ -184,9 +184,9 @@ export default function Loader({ variant = "hero", onFinish, progress }: LoaderP
                   y: -10,
                   transition: { duration: 0.25, ease: "easeOut" } 
                 }}
-                className="font-sans font-bold tracking-[0.25em] text-[#54EB17] uppercase text-xs md:text-sm bg-[#54EB17]/10 px-6 py-3 rounded-full border border-[#54EB17]/30 shadow-[0_0_15px_rgba(84,235,23,0.1)] hover:bg-[#54EB17]/20 transition-colors"
+                className="font-sans font-bold tracking-[0.25em] text-[#54EB17] lowercase text-xs md:text-sm bg-[#54EB17]/10 px-6 py-3 rounded-full border border-[#54EB17]/30 shadow-[0_0_15px_rgba(84,235,23,0.1)] hover:bg-[#54EB17]/20 transition-colors"
               >
-                [ Tap to pull the lever ]
+                [ tap to enter ]
               </motion.p>
             ) : null
           ) : !isHero ? (
