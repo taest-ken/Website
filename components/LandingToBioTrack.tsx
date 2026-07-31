@@ -213,20 +213,14 @@ export default function LandingToBioTrack() {
                   - top-[26%] and bottom-[6%] map perfectly to the grey area on the image.
                   - left-[4%] and right-[4%] keep it inside the red side borders.
               */}
-              <div className="absolute top-[26%] bottom-[6%] left-[4%] right-[4%] z-10 flex items-center justify-center p-2 sm:p-6 lg:p-8 select-text">
-                
-                {/* 
-                    CENTER ALIGNED STACKED PARAGRAPHS: 
-                    - text-center aligns the text to the middle.
-                    - Removed list-disc and pl-* padding.
-                    - space-y-* cleanly separates the 3 lines like breaks, scaling across mobile to desktop.
-                */}
-                <div className="w-full text-black text-center text-[9px] xs:text-[10px] sm:text-[12px] md:text-sm lg:text-[15px] leading-tight sm:leading-snug md:leading-relaxed tracking-tight space-y-2 sm:space-y-3 md:space-y-4 px-2">
-                  <p>We are a global social establishment empowering every member of the creative ecosystem. At taest, <b>community, cultural intelligence and curation</b> form the bedrock of brand building.</p>
-                  <p>Our model: discover, network, collaborate, find community, repeat.</p>
-                  <p>Our practice spans creative strategy, creative direction, design, cultural OS, tech prototyping, AI agents and AI studio.</p>
-                </div>
-              </div>
+              {/* STRICT BOUNDING BOX FOR WHITE LABEL AREA */}
+          <div className="absolute top-[30%] bottom-[16%] left-[6%] right-[6%] z-10 flex flex-col items-center justify-center overflow-hidden">
+            <div className="w-full text-black text-center text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[12.5px] lg:text-[14.5px] leading-[1.15] sm:leading-[1.25] md:leading-[1.4] tracking-tight space-y-1.5 sm:space-y-2 md:space-y-3 px-1">
+              <p>We are a global social establishment for the creative ecosystem. We are pioneers of the social-club era of brand building, where <b>community, culture, curation and connection</b> build brands that endure.</p>
+              <p>Our model: discover, network, collaborate, find community.</p>
+              <p>Our practice spans creative strategy, creative direction, design, cultural intelligence, tech prototyping, AI agents and AI studio.</p>
+            </div>
+          </div>
             </div>
           </motion.div>
         </div>
