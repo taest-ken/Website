@@ -216,7 +216,7 @@ export default function LandingToBioTrack() {
               {/* STRICT BOUNDING BOX FOR WHITE LABEL AREA */}
           <div className="absolute top-[30%] bottom-[16%] left-[6%] right-[6%] z-10 flex flex-col items-center justify-center overflow-hidden">
             <div className="w-full text-black text-center text-[8px] xs:text-[9.5px] sm:text-[11px] md:text-[12.5px] lg:text-[14.5px] leading-[1.15] sm:leading-[1.25] md:leading-[1.4] tracking-tight space-y-1.5 sm:space-y-2 md:space-y-3 px-1">
-              <p>We are a global social establishment empowering every member of the creative ecosystem. At taest,<>b</> community, cultural intelligence and curation</b> form the bedrock of brand building.</p>
+              <p>We are a global social establishment empowering every member of the creative ecosystem. At taest,<b> community, cultural intelligence and curation</b> form the bedrock of brand building.</p>
               <p>Our model: discover, network, collaborate, find community, repeat.</p>
               <p>Our practice spans creative strategy, creative direction, design, cultural OS, tech prototyping, AI agents and AI studio.</p>
             </div>
