@@ -56,7 +56,7 @@ const collabsData: CollabData[] = [
     folders: [{ path: "collabs_media/brand-book", sort: "ordered" }],
   },
   {
-    headline: "Taest HumAIne Kitchen Inhouse",
+    headline: "A.I.Shappat Studio Inhouse",
     subhead: "AI Creative Direction",
     featuredMedia: "/collabs_media/creative-direction/thumb.png",
     description: "A demonstration of the agency's AI creative direction capability displayed via our stunning social posts.",
